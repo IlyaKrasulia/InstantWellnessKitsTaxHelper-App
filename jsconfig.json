@@ -6,12 +6,12 @@
     "jsx": "react-jsx",
     "paths": {
       "@/*": ["src/*"],
-      "@assets/*": ["src/assets/*"],
-      "@components/*": ["src/components/*"],
-      "@pages/*": ["src/pages/*"],
-      "@utils/*": ["src/utils/*"],
       "@styles": ["src/utils/styles.ts"]
-    }
+    },
+    "moduleResolution": "bundler", 
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
-  "include": ["src"]
+  "include": ["src/**/*"] // This stays outside compilerOptions
 }
