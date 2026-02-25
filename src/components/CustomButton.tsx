@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
 import styled, { css } from "styled-components";
-import { COLORS } from "@styles";
+import { COLORS, FONTS } from "@styles";
 
 const SIZES = {
   small: css`
@@ -59,7 +59,7 @@ const VARIANTS = {
 };
 
 const StyledButton = styled.button<StyledButtonProps>`
-  font-family: "Gilroy-Medium", sans-serif;
+  font-family: ${FONTS.family};
   display: inline-flex;
   align-items: center;
   justify-content: center;

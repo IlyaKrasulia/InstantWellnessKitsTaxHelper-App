@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 
 import "./index.css";
 import { AppLayout } from "./components/AppLayout";
+import { CreateManualOrder } from "./pages/mainStack/CreateManualOrder";
 import { ImportCSVScreen } from "./pages/mainStack/ImportCSV";
 import { OrdersList } from "./pages/mainStack/ordersList";
 

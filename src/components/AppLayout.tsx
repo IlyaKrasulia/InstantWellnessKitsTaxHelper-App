@@ -128,13 +128,13 @@ export const AppLayout = ({ children, title, info }: IProps) => {
           </div>
 
           <NavMenu>
-            <NavItem $active>
+            <NavItem>
               <span>
                 <Import />
               </span>{" "}
               Import CSV
             </NavItem>
-            <NavItem>
+            <NavItem $active>
               <span>
                 <File />
               </span>{" "}
