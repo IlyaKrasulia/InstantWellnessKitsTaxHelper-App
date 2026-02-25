@@ -6,24 +6,15 @@ import "./index.css";
 import { AppLayout } from "./components/AppLayout";
 import { CreateManualOrder } from "./pages/mainStack/CreateManualOrder";
 import { ImportCSVScreen } from "./pages/mainStack/ImportCSV";
+import { OrdersList } from "./pages/mainStack/ordersList";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-
-    {/* Import CSV Flow */}
-
-    {/* <AppLayout
-      title="Import Orders"
-      info="Upload your sales data to calculate taxes and generate reports automatically."
-    >
-      <ImportCSVScreen />
-    </AppLayout> */}
-
     <AppLayout
-      title="Create Order Manually"
-      info="Enter the location coordinates and order amount to calculate taxes and save the entry."
+      title="Orders History"
+      info="Manage and review all processed transactions and their tax calculations."
     >
-      <CreateManualOrder />
+      <OrdersList />
     </AppLayout>
-  </StrictMode>,
+  </StrictMode>
 );
