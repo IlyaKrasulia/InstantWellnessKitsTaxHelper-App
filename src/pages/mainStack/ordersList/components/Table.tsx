@@ -18,20 +18,14 @@ const ITEMS_PER_PAGE = 5;
 export const Table = () => {
   const [itemOffset, setItemOffset] = useState(0);
 
-  // Simulate fetching items from another resources.
-  // (This could be items from props; or items loaded in a local state
-  // from an API endpoint with useEffect and useState)
   const endOffset = itemOffset + ITEMS_PER_PAGE;
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentItems = items.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(items.length / ITEMS_PER_PAGE);
+  const currentOrders = MOCK_ORDERS.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(MOCK_ORDERS.length / ITEMS_PER_PAGE);
 
-  // Invoke when user click to request another page.
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * ITEMS_PER_PAGE) % items.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`,
-    );
+    const newOffset = (event.selected * ITEMS_PER_PAGE) % MOCK_ORDERS.length;
+
     setItemOffset(newOffset);
   };
 
@@ -50,7 +44,7 @@ export const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {MOCK_ORDERS.map((order) => (
+            {currentOrders.map((order) => (
               <Tr key={order.id}>
                 <Td>
                   {new Date(order.timestamp).toLocaleDateString("en-US", {
