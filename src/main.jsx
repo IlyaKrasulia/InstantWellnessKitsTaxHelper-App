@@ -1,11 +1,18 @@
-import { StrictMode } from 'react'
+import { StrictMode } from "react";
 
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import { createRoot } from "react-dom/client";
 
-createRoot(document.getElementById('root')).render(
+import "./index.css";
+import { AppLayout } from "./components/AppLayout";
+import { ImportCSVScreen } from "./pages/mainStack/ImportCSV";
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <div></div>
-    <div></div>
+    <AppLayout
+      title="Import Orders"
+      info="Upload your sales data to calculate taxes and generate reports automatically."
+    >
+      <ImportCSVScreen />
+    </AppLayout>
   </StrictMode>,
-)
+);
