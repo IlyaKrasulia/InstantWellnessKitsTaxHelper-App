@@ -15,6 +15,7 @@
     "progressive-blur": "^1.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-paginate": "^8.3.0",
     "react-progressive-blur": "^1.0.6",
     "styled-components": "^6.3.11"
   },
