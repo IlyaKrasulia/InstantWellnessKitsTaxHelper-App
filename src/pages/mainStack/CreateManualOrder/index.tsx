@@ -1,6 +1,6 @@
 import { CustomButton } from "@/components/CustomButton";
 import { CustomInput } from "@/components/CustomInput";
-import { COLORS, SPACING } from "@/utils/styles";
+import { SPACING } from "@/utils/styles";
 import styled from "styled-components";
 
 export const CreateManualOrder = () => {
@@ -32,8 +32,8 @@ export const CreateManualOrder = () => {
       <Footer>
         <CustomButton
           size="large"
-          variant="ghost"
-          style={{ width: "100%", color: COLORS.error }}
+          variant="error"
+          style={{ width: "100%" }}
         >
           Clear Form
         </CustomButton>
@@ -59,4 +59,8 @@ const TopInputs = styled.div`
   margin: ${SPACING.lg} 0;
 `;
 
-const Footer = styled.div``;
+const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: ${SPACING.lg};
+`;
