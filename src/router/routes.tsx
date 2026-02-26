@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <ProtectedRoute />,
+    element: <ProtectedRoute isLogin={!!localStorage.getItem('isLogin')} />,
     errorElement: <ErrorPage />,
     children: [
       {

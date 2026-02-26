@@ -13,8 +13,27 @@ import { CustomInput } from "@/components/CustomInput";
 import { CustomButton } from "@/components/CustomButton";
 import logo from "@assets/images/logo.svg";
 import loginIcon from "@assets/images/login.svg";
+import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AuthFormData, authSchema } from "./validation";
+import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AuthFormData>({
+    resolver: zodResolver(authSchema),
+    mode: 'onTouched',
+  });
+
+  const onSubmit = (data: AuthFormData) => {
+    localStorage.setItem('isLogin', '1')
+    navigate('/');
+  };
+
   return (
     <Container>
       <Logo src={logo} />
@@ -31,7 +50,7 @@ export const LoginPage = () => {
       />
 
       <MainContent>
-        <FormCard>
+        <FormCard onSubmit={handleSubmit(onSubmit)}>
           <IconContainer>
             <LoginIcon src={loginIcon} />
           </IconContainer>
@@ -45,6 +64,8 @@ export const LoginPage = () => {
             label="Email Address"
             placeholder="example@mail.com"
             fullWidth
+            error={errors.email?.message}
+            {...register('email')}
           />
 
           <CustomInput
@@ -52,12 +73,15 @@ export const LoginPage = () => {
             type="password"
             placeholder="••••••••"
             fullWidth
+            error={errors.password?.message}
+            {...register('password')}
           />
 
           <CustomButton
             variant="primary"
             fullWidth
             style={{ marginTop: "10px" }}
+            type="submit"
           >
             Sign In
           </CustomButton>

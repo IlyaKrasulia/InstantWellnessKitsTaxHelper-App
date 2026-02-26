@@ -12,7 +12,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const FormCard = styled.div`
+const FormCard = styled.form`
   width: 100%;
   max-width: 400px;
   padding: 40px;

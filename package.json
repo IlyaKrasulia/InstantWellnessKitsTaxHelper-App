@@ -11,14 +11,17 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "lucide-react": "^0.575.0",
     "progressive-blur": "^1.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.71.2",
     "react-paginate": "^8.3.0",
     "react-progressive-blur": "^1.0.6",
     "react-router-dom": "^7.13.1",
-    "styled-components": "^6.3.11"
+    "styled-components": "^6.3.11",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.4.2",
