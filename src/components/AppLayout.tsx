@@ -78,7 +78,6 @@ export const AppLayout = () => {
 
 const SidebarContainer = styled.aside`
   width: 280px;
-  height: 100vh;
   background-color: ${COLORS.surface};
   border-right: 1px solid ${COLORS.border};
   display: flex;
