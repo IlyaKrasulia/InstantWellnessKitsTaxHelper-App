@@ -130,7 +130,7 @@ const NavItem = styled.div<{ $active?: boolean, $logout?: boolean, }>`
   &:hover {
     background-color: ${(props) =>
       props.$active ? COLORS.gray : COLORS.hoverOverlay};
-    color: ${(props) => (props.$active ? COLORS.white : props.$logout ? COLORS.errorLigher : COLORS.textPrimary)};
+    color: ${(props) => (props.$active ? COLORS.white : props.$logout ? COLORS.errorLighter : COLORS.textPrimary)};
   }
 
   svg {

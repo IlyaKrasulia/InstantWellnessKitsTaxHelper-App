@@ -1,6 +1,6 @@
 import { BORDER_RADIUS, COLORS, FONTS } from '@/utils/styles';
 import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 interface DropdownProps {
@@ -14,23 +14,38 @@ interface DropdownProps {
 export const Dropdown = ({ label, options, value, onChange, placeholder }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div ref={wrapperRef} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {label && <Label>{label}</Label>}
       <DropdownWrapper>
         <SelectButton $isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
           <span>{value || placeholder}</span>
-          <ChevronDown size={18} style={{ 
-            transform: isOpen ? 'rotate(180deg)' : 'rotate(0)', 
-            transition: '0.3s' 
+          <ChevronDown size={18} style={{
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0)',
+            transition: '0.3s'
           }} />
         </SelectButton>
 
         {isOpen && (
           <OptionsList>
             {options.map((option) => (
-              <OptionItem 
-                key={option} 
+              <OptionItem
+                key={option}
                 onClick={() => {
                   onChange(option);
                   setIsOpen(false);

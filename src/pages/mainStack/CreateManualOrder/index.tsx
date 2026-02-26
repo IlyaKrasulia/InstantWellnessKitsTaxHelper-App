@@ -10,6 +10,7 @@ export const CreateManualOrder = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm<ManualOrderData>({
     resolver: zodResolver(manualOrderSchema),
@@ -17,7 +18,7 @@ export const CreateManualOrder = () => {
   });
 
   const onSubmit = (data: ManualOrderData) => {
-    console.log("Saving order:", data);
+    // TODO: send via API/service layer
   };
 
   return (
@@ -30,6 +31,7 @@ export const CreateManualOrder = () => {
             label="Latitude (lat)"
             placeholder="e.g. 50.4501"
             error={errors.lat?.message}
+            hasError={Boolean(errors.lat)}
             {...register("lat")}
           />
           <CustomInput
@@ -38,6 +40,7 @@ export const CreateManualOrder = () => {
             label="Longitude (lon)"
             placeholder="e.g. 30.5234"
             error={errors.lon?.message}
+            hasError={Boolean(errors.lon)}
             {...register("lon")}
           />
         </TopInputs>
@@ -47,11 +50,12 @@ export const CreateManualOrder = () => {
           label="Subtotal Amount"
           placeholder="0.00"
           error={errors.subtotal?.message}
+          hasError={Boolean(errors.subtotal)}
           {...register("subtotal")}
         />
       </div>
       <Footer>
-        <CustomButton size="large" variant="error" style={{ width: "100%" }}>
+        <CustomButton onClick={() => reset()} size="large" variant="error" style={{ width: "100%" }}>
           Clear Form
         </CustomButton>
         <CustomButton
