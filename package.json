@@ -16,6 +16,7 @@
     "progressive-blur": "^1.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-dropdown": "^1.11.0",
     "react-hook-form": "^7.71.2",
     "react-paginate": "^8.3.0",
     "react-progressive-blur": "^1.0.6",

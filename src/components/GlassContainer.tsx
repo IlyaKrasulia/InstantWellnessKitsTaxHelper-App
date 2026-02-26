@@ -14,8 +14,8 @@ const AppContainer = styled.div`
   height: 80vh;
 
   background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
 
   border-radius: 32px;
   border: 1px solid rgba(255, 255, 255, 0.3);

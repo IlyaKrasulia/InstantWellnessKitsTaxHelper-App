@@ -34,8 +34,8 @@ export const ErrorPage = () => {
 
 const GlassContainer = styled.div`
   background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   border-radius: ${BORDER_RADIUS.large};
   padding: ${SPACING.xl};
   text-align: center;
@@ -50,7 +50,7 @@ const ErrorTitle = styled.h2`
 `;
 
 const ErrorDescription = styled.p`
-  color: ${COLORS.textSecondary};
+  color: ${COLORS.gray};
   margin-bottom: ${SPACING.lg};
   line-height: 1.6;
   font-family: ${FONTS.family};

@@ -159,5 +159,5 @@ const InfoText = styled.h3`
   font-family: ${FONTS.family};
   font-weight: ${FONTS.weight.medium};
   font-size: ${FONT_SIZES.body};
-  color: ${COLORS.textSecondary};
+  color: ${COLORS.gray};
 `;
