@@ -15,7 +15,6 @@ export const UploadedState = ({
   filename,
   filesize,
   isError,
-  errorMsg,
 }: IProps) => {
   const formatedSize = useMemo(() => filesize.toLocaleString(), [filesize]);
 

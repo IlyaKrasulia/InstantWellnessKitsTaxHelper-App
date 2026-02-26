@@ -1,8 +1,6 @@
 import {
   BORDER_RADIUS,
   COLORS,
-  FONT_SIZES,
-  FONTS,
   SPACING,
 } from "@/utils/styles";
 import { ChangeEvent, useRef, useState } from "react";
@@ -10,9 +8,9 @@ import styled from "styled-components";
 import { EmpryState } from "./components/EmptyState";
 import { UploadedState } from "./components/UploadedState";
 
-export const ImportCSVScreen = () => {
+export const ImportCSVPage = () => {
   const [isDragActive, setIsDragActive] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [isError] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File>();
 
   const inputRef = useRef(null);
@@ -135,31 +133,4 @@ const Container = styled.div<{ $active?: boolean, $hasError?: boolean }>`
         ? 'inset 0 0 20px rgba(239, 68, 68, 0.15), 0 8px 24px rgba(239, 68, 68, 0.1)' 
         : 'inset 0 0 20px rgba(56, 189, 248, 0.1), 0 8px 24px rgba(56, 189, 248, 0.08)'};
   }
-`;
-
-const UploadInfoTitle = styled.h2`
-  font-family: ${FONTS.family};
-  font-weight: ${FONTS.weight.bold};
-  font-size: ${FONT_SIZES.h2};
-  margin-bottom: ${SPACING.sm};
-  margin-top: ${SPACING.md};
-  color: ${COLORS.textPrimary};
-  text-align: center;
-`;
-
-const UploadInfoInfo = styled.h3`
-  font-family: ${FONTS.family};
-  font-weight: ${FONTS.weight.medium};
-  font-size: ${FONT_SIZES.body};
-  color: ${COLORS.textSecondary};
-  text-align: center;
-`;
-
-const HintText = styled.h4`
-  font-family: ${FONTS.family};
-  font-weight: ${FONTS.weight.medium};
-  font-size: ${FONT_SIZES.small};
-  color: ${COLORS.textSecondary};
-  text-align: center;
-  margin-bottom: ${SPACING.sm};
 `;

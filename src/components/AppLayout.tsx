@@ -1,46 +1,84 @@
 import styled from "styled-components";
+import { Outlet, useMatches, useNavigate } from "react-router-dom";
 import { COLORS, FONT_SIZES, FONTS, SPACING } from "@styles";
 import logo from "@assets/images/logo-black.svg";
-import fitnessImg from "@assets/images/login-bg.jpg";
 import { File, HelpCircle, Import, ListOrdered, Settings } from "lucide-react";
-import { ReactNode } from "react";
+import { RouteNames } from "@/utils/routes";
+import { MainBG } from "./MainBG";
+import { GlassContainer } from "./GlassContainer";
 
-const Layout = styled.div`
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${fitnessImg});
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
+interface RouteHandle {
+  title?: string;
+  info?: string;
+}
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+const TABS = [
+  { name: "Import CSV", icon: <Import />, path: RouteNames.IMPORT },
+  { name: "Manual Create", icon: <File />, path: RouteNames.CREATE },
+  { name: "Orders List", icon: <ListOrdered />, path: RouteNames.ORDERS },
+];
 
-const AppContainer = styled.div`
-  display: flex;
-  width: 90vw;
-  height: 80vh;
+export const AppLayout = () => {
+  const navigate = useNavigate();
 
-  background-color: rgba(248, 249, 250, 0.8);
+  const matches = useMatches();
 
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  const currentMatch = matches.find((m) => m.handle);
+  const { title, info } = (currentMatch?.handle as RouteHandle) || {};
 
-  border-radius: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  const onOpenPage = (path: string) => {
+    navigate(`/${path}`);
+  };
 
-  overflow: hidden;
-  z-index: 10;
-`;
+  return (
+    <MainBG>
+      <GlassContainer>
+        <SidebarContainer>
+          <div style={{ paddingLeft: "10px" }}>
+            <img src={logo} alt="BDPay" style={{ height: "20px" }} />
+          </div>
+
+          <NavMenu>
+            {TABS.map((tab) => (
+              <NavItem
+                key={tab.path}
+                $active={currentMatch?.pathname === `/${tab.path}`}
+                onClick={() => onOpenPage(tab.path)}
+              >
+                <span>{tab.icon}</span> {tab.name}
+              </NavItem>
+            ))}
+          </NavMenu>
+
+          <BottomMenu>
+            <NavItem>
+              <span>
+                <HelpCircle />
+              </span>{" "}
+              Get Help
+            </NavItem>
+            <NavItem>
+              <span>
+                <Settings />
+              </span>{" "}
+              Settings
+            </NavItem>
+          </BottomMenu>
+        </SidebarContainer>
+
+        <MainContent>
+          {title && <Title>{title}</Title>}
+          {info && <InfoText>{info}</InfoText>}
+          <Outlet />
+        </MainContent>
+      </GlassContainer>
+    </MainBG>
+  );
+};
 
 const SidebarContainer = styled.aside`
   width: 280px;
-  height: 100мр;
+  height: 100vh;
   background-color: ${COLORS.surface};
   border-right: 1px solid ${COLORS.border};
   display: flex;
@@ -111,65 +149,3 @@ const InfoText = styled.h3`
   font-size: ${FONT_SIZES.body};
   color: ${COLORS.textSecondary};
 `;
-
-interface IProps {
-  children: ReactNode;
-  title?: string;
-  info?: string;
-}
-
-export const AppLayout = ({ children, title, info }: IProps) => {
-  return (
-    <Layout>
-      <AppContainer>
-        <SidebarContainer>
-          <div style={{ paddingLeft: "10px" }}>
-            <img src={logo} alt="BDPay" style={{ height: "20px" }} />
-          </div>
-
-          <NavMenu>
-            <NavItem>
-              <span>
-                <Import />
-              </span>{" "}
-              Import CSV
-            </NavItem>
-            <NavItem $active>
-              <span>
-                <File />
-              </span>{" "}
-              Manual Create
-            </NavItem>
-            <NavItem>
-              <span>
-                <ListOrdered />
-              </span>{" "}
-              Orders List
-            </NavItem>
-          </NavMenu>
-
-          <BottomMenu>
-            <NavItem>
-              <span>
-                <HelpCircle />
-              </span>{" "}
-              Get Help
-            </NavItem>
-            <NavItem>
-              <span>
-                <Settings />
-              </span>{" "}
-              Settings
-            </NavItem>
-          </BottomMenu>
-        </SidebarContainer>
-
-        <MainContent>
-          {title && <Title>{title}</Title>}
-          {info && <InfoText>{info}</InfoText>}
-          {children}
-        </MainContent>
-      </AppContainer>
-    </Layout>
-  );
-};
