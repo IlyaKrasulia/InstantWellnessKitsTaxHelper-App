@@ -1,4 +1,4 @@
-import { BORDER_RADIUS, COLORS, FONT_SIZES, FONTS, SHADOWS } from '@/utils/styles';
+import { COLORS, FONT_SIZES, FONTS, SHADOWS } from '@/utils/styles';
 import fitnessImg from '@assets/images/login-bg.jpg';
 import styled from 'styled-components';
 
