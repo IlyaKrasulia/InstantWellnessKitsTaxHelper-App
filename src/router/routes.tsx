@@ -1,9 +1,9 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, redirect } from 'react-router-dom';
 import { LoginPage } from '@/pages/auth/Login';
 import { AppLayout } from '@/components/AppLayout';
 import { ImportCSVPage } from '@/pages/mainStack/ImportCSV';
 import { CreateManualOrder } from '@/pages/mainStack/CreateManualOrder';
-import { OrdersList } from '@/pages/mainStack/ordersList';
+import { OrdersList } from '@/pages/mainStack/OrdersList';
 import { RouteNames } from '@/utils/routes';
 import { ProtectedRoute } from './ProtectedRoute';
 import { ErrorPage } from '@/pages/mainStack/ErrorPage';
@@ -18,6 +18,10 @@ export const router = createBrowserRouter([
     element: <ProtectedRoute />,
     errorElement: <ErrorPage />,
     children: [
+      {
+                index: true,
+                loader: () => redirect(`/${RouteNames.IMPORT}`),
+              },
       {
         element: <AppLayout />,
         children: [

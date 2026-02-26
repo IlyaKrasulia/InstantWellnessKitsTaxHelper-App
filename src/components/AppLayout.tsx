@@ -44,6 +44,9 @@ export const AppLayout = () => {
                 key={tab.path}
                 $active={currentMatch?.pathname === `/${tab.path}`}
                 onClick={() => onOpenPage(tab.path)}
+                as="button"
+                type="button"
+                aria-current={currentMatch?.pathname === `/${tab.path}` ? "page" : undefined}
               >
                 <span>{tab.icon}</span> {tab.name}
               </NavItem>
@@ -110,6 +113,11 @@ const NavItem = styled.div<{ $active?: boolean }>`
   font-family: ${FONTS.family};
   font-weight: ${FONTS.weight.medium};
   transition: all 0.2s ease;
+
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 
   background-color: ${(props) => (props.$active ? COLORS.gray : "transparent")};
   color: ${(props) => (props.$active ? COLORS.white : COLORS.textSecondary)};
