@@ -18,6 +18,7 @@ export const CreateManualOrder = () => {
   });
 
   const onSubmit = (data: ManualOrderData) => {
+    void data;
     // TODO: send via API/service layer
   };
 

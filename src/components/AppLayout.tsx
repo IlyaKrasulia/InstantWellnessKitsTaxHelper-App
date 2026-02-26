@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Outlet, useMatches, useNavigate } from "react-router-dom";
 import { COLORS, FONT_SIZES, FONTS, SPACING } from "@styles";
 import logo from "@assets/images/logo-black.svg";
-import { File, HelpCircle, Import, ListOrdered, LogOut, Settings } from "lucide-react";
+import { File, HelpCircle, Import, ListOrdered, LogOut } from "lucide-react";
 import { RouteNames } from "@/utils/routes";
 import { MainBG } from "./MainBG";
 import { GlassContainer } from "./GlassContainer";
@@ -65,7 +65,7 @@ export const AppLayout = () => {
               </span>{" "}
               Get Help
             </NavItem>
-            <NavItem $logout onClick={onLogout}>
+            <NavItem $logout onClick={onLogout} as="button" type="button" aria-label="Logout">
               <span>
                 <LogOut />
               </span>{" "}
@@ -129,7 +129,7 @@ const NavItem = styled.div<{ $active?: boolean, $logout?: boolean, }>`
 
   &:hover {
     background-color: ${(props) =>
-      props.$active ? COLORS.gray : COLORS.hoverOverlay};
+    props.$active ? COLORS.gray : COLORS.hoverOverlay};
     color: ${(props) => (props.$active ? COLORS.white : props.$logout ? COLORS.errorLighter : COLORS.textPrimary)};
   }
 
