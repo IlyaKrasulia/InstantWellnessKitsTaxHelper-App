@@ -19,6 +19,7 @@ export const COLORS = {
   success: "#82C09A", // Soft green for "Paid" or "Success"
   warning: "#F3A683", // Soft orange for "Pending"
   error: "#E77F7F", // Gentle red for errors
+  errorLighter: "#ff4c4c", // For hover effects
 
   // Interactive Elements
   border: "#E8EBF0", // Subtle border for inputs and tables

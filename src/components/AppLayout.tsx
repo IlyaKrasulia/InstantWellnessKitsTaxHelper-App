@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Outlet, useMatches, useNavigate } from "react-router-dom";
 import { COLORS, FONT_SIZES, FONTS, SPACING } from "@styles";
 import logo from "@assets/images/logo-black.svg";
-import { File, HelpCircle, Import, ListOrdered, Settings } from "lucide-react";
+import { File, HelpCircle, Import, ListOrdered, LogOut } from "lucide-react";
 import { RouteNames } from "@/utils/routes";
 import { MainBG } from "./MainBG";
 import { GlassContainer } from "./GlassContainer";
@@ -29,6 +29,11 @@ export const AppLayout = () => {
   const onOpenPage = (path: string) => {
     navigate(`/${path}`);
   };
+
+  const onLogout = () => {
+    localStorage.removeItem('isLogin');
+    navigate(RouteNames.LOGIN, { replace: true });
+  }
 
   return (
     <MainBG>
@@ -60,11 +65,11 @@ export const AppLayout = () => {
               </span>{" "}
               Get Help
             </NavItem>
-            <NavItem>
+            <NavItem $logout onClick={onLogout} as="button" type="button" aria-label="Logout">
               <span>
-                <Settings />
+                <LogOut />
               </span>{" "}
-              Settings
+              Logout
             </NavItem>
           </BottomMenu>
         </SidebarContainer>
@@ -103,7 +108,7 @@ const NavMenu = styled.nav`
   flex: 1;
 `;
 
-const NavItem = styled.div<{ $active?: boolean }>`
+const NavItem = styled.div<{ $active?: boolean, $logout?: boolean, }>`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -120,12 +125,12 @@ const NavItem = styled.div<{ $active?: boolean }>`
   cursor: pointer;
 
   background-color: ${(props) => (props.$active ? COLORS.gray : "transparent")};
-  color: ${(props) => (props.$active ? COLORS.white : COLORS.textSecondary)};
+  color: ${(props) => (props.$active ? COLORS.white : props.$logout ? COLORS.error : COLORS.textSecondary)};
 
   &:hover {
     background-color: ${(props) =>
-      props.$active ? COLORS.gray : COLORS.hoverOverlay};
-    color: ${(props) => (props.$active ? COLORS.white : COLORS.textPrimary)};
+    props.$active ? COLORS.gray : COLORS.hoverOverlay};
+    color: ${(props) => (props.$active ? COLORS.white : props.$logout ? COLORS.errorLighter : COLORS.textPrimary)};
   }
 
   svg {
@@ -154,5 +159,5 @@ const InfoText = styled.h3`
   font-family: ${FONTS.family};
   font-weight: ${FONTS.weight.medium};
   font-size: ${FONT_SIZES.body};
-  color: ${COLORS.textSecondary};
+  color: ${COLORS.gray};
 `;

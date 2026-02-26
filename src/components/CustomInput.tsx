@@ -30,7 +30,7 @@ const InputContainer = styled.div<{ $fullWidth?: boolean }>`
 const Label = styled.label`
   font-family: "Gilroy-Medium", sans-serif;
   font-size: 14px;
-  color: ${COLORS.textSecondary};
+  color: ${COLORS.gray};
   padding-left: 4px;
 `;
 
