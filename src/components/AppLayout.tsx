@@ -32,7 +32,7 @@ export const AppLayout = () => {
 
   const onLogout = () => {
     localStorage.removeItem('isLogin');
-    navigate(RouteNames.LOGIN);
+    navigate(RouteNames.LOGIN, { replace: true });
   }
 
   return (
