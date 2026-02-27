@@ -21,28 +21,26 @@ export const CreateManualOrder = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data: ManualOrderData) => {
+  const onSubmit = async (data: ManualOrderData) => {
     try {
       const date = new Date();
       const formattedDate = format(date, "yyyy-MM-dd HH:mm:ss");
 
-      api
-        .post(Endpoints.POST_ORDER, {
-          latitude: data.lat,
-          longitude: data.lon,
-          subtotal: data.subtotal,
-          timestamp: formattedDate,
-        })
-        .then((res) => {
-          toast.success(res.data.message || "Order created successfully!");
-          reset();
-        })
-        .catch((err) => {
-          toast.error("Unvalid input data. Please check your entries.");
-        });
-    } catch (error) {
-      console.error("Failed to create order:", error);
-      toast.error("Invalid input data. Please check your entries.");
+      const res = await api.post(Endpoints.POST_ORDER, {
+        latitude: data.lat,
+        longitude: data.lon,
+        subtotal: data.subtotal,
+        timestamp: formattedDate,
+      });
+
+      toast.success(res.data.message || "Order created successfully!");
+      reset();
+    } catch (err: any) {
+      const errorMessage =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Invalid input data. Please check your entries.";
+      toast.error(errorMessage);
     }
   };
 
