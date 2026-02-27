@@ -22,13 +22,6 @@ export const CreateManualOrder = () => {
   });
 
   const onSubmit = (data: ManualOrderData) => {
-    console.log({
-      latitude: data.lat,
-      longitude: data.lon,
-      subtotal: data.subtotal,
-      timestamp: new Date().toISOString(),
-    });
-
     try {
       const date = new Date();
       const formattedDate = format(date, "yyyy-MM-dd HH:mm:ss");
