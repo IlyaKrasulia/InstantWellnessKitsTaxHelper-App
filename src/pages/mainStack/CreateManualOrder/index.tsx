@@ -42,6 +42,7 @@ export const CreateManualOrder = () => {
         });
     } catch (error) {
       console.error("Failed to create order:", error);
+      toast.error("Invalid input data. Please check your entries.");
     }
   };
 
@@ -81,6 +82,7 @@ export const CreateManualOrder = () => {
       <Footer>
         <CustomButton
           onClick={() => reset()}
+          type="button"
           size="large"
           variant="error"
           style={{ width: "100%" }}
