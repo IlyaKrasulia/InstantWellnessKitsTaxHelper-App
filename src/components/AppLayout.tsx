@@ -6,6 +6,9 @@ import { File, HelpCircle, Import, ListOrdered, LogOut } from "lucide-react";
 import { RouteNames } from "@/utils/routes";
 import { MainBG } from "./MainBG";
 import { GlassContainer } from "./GlassContainer";
+import api from "@/api/instance";
+import { Endpoints } from "@/api/endpoints";
+import { toast } from "react-toastify";
 
 interface RouteHandle {
   title?: string;
@@ -31,9 +34,16 @@ export const AppLayout = () => {
   };
 
   const onLogout = () => {
-    localStorage.removeItem('isLogin');
-    navigate(RouteNames.LOGIN, { replace: true });
-  }
+    api
+      .post(Endpoints.LOGOUT)
+      .then(() => {
+        localStorage.removeItem("isLogin");
+        navigate(RouteNames.LOGIN, { replace: true });
+      })
+      .catch(() => {
+        toast.error("Logout failed. Please try again.");
+      });
+  };
 
   return (
     <MainBG>
@@ -51,7 +61,9 @@ export const AppLayout = () => {
                 onClick={() => onOpenPage(tab.path)}
                 as="button"
                 type="button"
-                aria-current={currentMatch?.pathname === `/${tab.path}` ? "page" : undefined}
+                aria-current={
+                  currentMatch?.pathname === `/${tab.path}` ? "page" : undefined
+                }
               >
                 <span>{tab.icon}</span> {tab.name}
               </NavItem>
@@ -65,7 +77,13 @@ export const AppLayout = () => {
               </span>{" "}
               Get Help
             </NavItem>
-            <NavItem $logout onClick={onLogout} as="button" type="button" aria-label="Logout">
+            <NavItem
+              $logout
+              onClick={onLogout}
+              as="button"
+              type="button"
+              aria-label="Logout"
+            >
               <span>
                 <LogOut />
               </span>{" "}
@@ -108,7 +126,7 @@ const NavMenu = styled.nav`
   flex: 1;
 `;
 
-const NavItem = styled.div<{ $active?: boolean, $logout?: boolean, }>`
+const NavItem = styled.div<{ $active?: boolean; $logout?: boolean }>`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -125,12 +143,22 @@ const NavItem = styled.div<{ $active?: boolean, $logout?: boolean, }>`
   cursor: pointer;
 
   background-color: ${(props) => (props.$active ? COLORS.gray : "transparent")};
-  color: ${(props) => (props.$active ? COLORS.white : props.$logout ? COLORS.error : COLORS.textSecondary)};
+  color: ${(props) =>
+    props.$active
+      ? COLORS.white
+      : props.$logout
+        ? COLORS.error
+        : COLORS.textSecondary};
 
   &:hover {
     background-color: ${(props) =>
-    props.$active ? COLORS.gray : COLORS.hoverOverlay};
-    color: ${(props) => (props.$active ? COLORS.white : props.$logout ? COLORS.errorLighter : COLORS.textPrimary)};
+      props.$active ? COLORS.gray : COLORS.hoverOverlay};
+    color: ${(props) =>
+      props.$active
+        ? COLORS.white
+        : props.$logout
+          ? COLORS.errorLighter
+          : COLORS.textPrimary};
   }
 
   svg {
