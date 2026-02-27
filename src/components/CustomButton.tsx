@@ -4,7 +4,8 @@ import { COLORS, FONTS } from "@styles";
 
 const SIZES = {
   small: css`
-    padding: 8px 16px;
+    padding: 0 8px;
+    height: 40px;
     font-size: 14px;
     border-radius: 10px;
   `,

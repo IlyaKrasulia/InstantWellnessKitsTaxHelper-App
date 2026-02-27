@@ -1,106 +1,32 @@
+import { CustomButton } from "@/components/CustomButton";
 import { CustomInput } from "@/components/CustomInput";
+import { DateFilters } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
+import { TotalFilters } from "@/components/TotalFilters";
+import { COUNTY_OPTIONS, NY_LOCATIONS } from "@/utils/locations";
 import { COLORS, FONTS, SPACING } from "@/utils/styles";
-import { OrderListItem } from "@/utils/types";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import "react-dropdown/style.css";
 import styled from "styled-components";
 
-const TAX_CITIES = [
-  "Norwich",
-  "Ogdensburg",
-  "Rome",
-  "Mount Vernon",
-  "Glens Falls",
-  "Salamanca",
-  "Ogdensburg",
-  "Rome",
-  "Mount Vernon",
-  "Glens Falls",
-  "Salamanca",
-  "Johnstown",
-  "New Rochelle",
-  "Oneida",
-  "Saratoga Springs",
-  "Yonkers",
-  "White Plains",
-  "Oswego",
-  "Utica",
-  "Gloversville",
-  "Ithaca",
-  "Olean",
-  "Auburn",
-];
+const sortByOptions = ["Price", "Time", "TaxAmount"];
+const sourceOptions = ["All", "Manual", "Import"];
 
-const TAX_COUNTIES = [
-  "Dutchess",
-  "Schenectady",
-  "Cortland",
-  "Tioga",
-  "St. Lawrence",
-  "Bronx",
-  "Orange",
-  "Clinton",
-  "Sullivan",
-  "Otsego",
-  "Ulster",
-  "Suffolk",
-  "Albany",
-  "Montgomery",
-  "Schuyler",
-  "Chemung",
-  "Cayuga",
-  "Putnam",
-  "Hamilton",
-  "Wayne",
-  "Delaware",
-  "Erie",
-  "Wyoming",
-  "Onondaga",
-  "Rensselaer",
-  "Yates",
-  "Richmond",
-  "Queens",
-  "Rockland",
-  "Allegany",
-  "Schoharie",
-  "Oneida",
-  "Warren",
-  "Greene",
-  "Tompkins",
-  "Ontario",
-  "Fulton",
-  "Chenango",
-  "Franklin",
-  "Madison",
-  "Chautauqua",
-  "Monroe",
-  "Jefferson",
-  "Livingston",
-  "Herkimer",
-  "New York",
-  "Lewis",
-  "Broome",
-  "Seneca",
-  "Steuben",
-  "Essex",
-  "Oswego",
-  "Cattaraugus",
-  "Nassau",
-  "Niagara",
-  "Columbia",
-  "Kings",
-  "Orleans",
-  "Westchester",
-  "Saratoga",
-  "Genesee",
-  "Washington",
-];
+const initialFilters: IFilters = {
+  SortBy: "Price",
+  SortDescending: "True",
+  Source: "All",
+  FromDate: "",
+  ToDate: "",
+  MinTotal: null,
+  MaxTotal: null,
+  County: "",
+  City: "",
+  OrderImportId: "",
+  Jurisdiction: ""
+};
 
-const counties = ["New York", "Los Angeles", "Cook", "Harris"];
-const cities = ["Manhattan", "Brooklyn", "Queens", "Long Island"];
-
-interface IFilters {
+export interface IFilters {
   FromDate: string;
   ToDate: string;
   County: string;
@@ -109,54 +35,87 @@ interface IFilters {
   MinTotal: null | number;
   MaxTotal: null | number;
   SortBy: string;
-  SortDirection: boolean;
+  SortDescending: string;
   Source: string;
   OrderImportId: string;
 }
 
 interface IProps {
   filters: IFilters;
-  setFilters: (filters: IFilters) => void;
+  setFilters: Dispatch<SetStateAction<IFilters>>;
 }
 
 export const Filters = ({ filters, setFilters }: IProps) => {
   const handleUpdate = (key: keyof IFilters, value: any) => {
-    setFilters({
-      ...filters,
-      [key]: value,
-    });
+    setFilters((prev) => ({
+    ...prev,
+    [key]: value,
+  }));
+  };
+
+  const availableCities = useMemo(
+    () => (filters.County ? NY_LOCATIONS[filters.County] || [] : []),
+    [filters],
+  );
+
+  const onClear = () => {
+    setFilters(initialFilters);
   };
 
   return (
     <FilterRow>
       <Dropdown
         label="County"
-        options={TAX_COUNTIES}
-        // Беремо значення безпосередньо з об'єкта фільтрів
-        value={filters.County}
-        onChange={(val) => handleUpdate("County", val)}
+        options={COUNTY_OPTIONS}
+        value={filters?.County || "All"}
+        onChange={(val) => {
+          handleUpdate("County", val);
+          handleUpdate("City", "");
+        }}
+      />
+
+      {availableCities.length ? <Dropdown
+        label="City"
+        options={availableCities}
+        value={filters?.City || "All"}
+        onChange={(val) => handleUpdate("City", val)}
+      /> : null}
+
+      <Dropdown
+        label="Sort By"
+        options={sortByOptions}
+        value={filters?.SortBy || "All"}
+        onChange={(val) => handleUpdate("SortBy", val)}
       />
 
       <Dropdown
-        label="City"
-        options={TAX_CITIES}
-        value={filters.City}
-        onChange={(val) => handleUpdate("City", val)}
+        label="Sort Descending"
+        options={["True", "False"]}
+        value={filters?.SortDescending || "True"}
+        onChange={(val) => handleUpdate("SortDescending", val)}
       />
 
-      {/* <Dropdown
-        label="Jurisdiction"
-        options={jurisdictions}
-        value={filters.Jurisdiction}
-        onChange={(val) => handleUpdate("Jurisdiction", val)}
-      /> */}
+      <Dropdown
+        label="Source"
+        options={sourceOptions}
+        value={filters?.Source || "All"}
+        onChange={(val) => handleUpdate("Source", val)}
+      />
+
+      <DateFilters filters={filters} setFilters={setFilters} />
+
+      <TotalFilters filters={filters} setFilters={setFilters} />
+
+      <CustomButton size="small" variant="error" onClick={onClear}>Clear Filters</CustomButton>
     </FilterRow>
   );
 };
 
 const FilterRow = styled.div`
   display: flex;
+  align-items: flex-end;
   gap: 20px;
   margin: ${SPACING.lg} 0;
-  align-items: flex-end;
+  flex-wrap: wrap;
+  row-gap: 10px;
 `;

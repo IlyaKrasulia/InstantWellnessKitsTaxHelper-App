@@ -4,29 +4,51 @@ import { Table } from "./components/Table";
 import { OrderListItem } from "@/utils/types";
 import api from "@/api/instance";
 import { Endpoints } from "@/api/endpoints";
+import { useDebounce } from "use-debounce";
+import { useSearchParams } from "react-router-dom";
 
 const ITEMS_PER_PAGE = 13;
 
 export const OrdersList = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [orders, setOrders] = useState<OrderListItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(Number(searchParams.get('page')) || 1);
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState({
-    FromDate: "",
-    ToDate: "",
-    County: "",
-    City: "",
+    FromDate: searchParams.get('FromDate') || "",
+    ToDate: searchParams.get('ToDate') || "",
+    County: searchParams.get('County') || "",
+    City: searchParams.get('City') || "",
     Jurisdiction: "",
-    MinTotal: null,
-    MaxTotal: null,
-    SortBy: "Time",
-    SortDirection: false,
-    Source: "",
+    MinTotal: searchParams.get('MinTotal') ? Number(searchParams.get('MinTotal')) : null,
+    MaxTotal: searchParams.get('MaxTotal') ? Number(searchParams.get('MaxTotal')) : null,
+    SortBy: searchParams.get('SortBy') || "Price",
+    SortDescending: searchParams.get('SortDescending') || "True",
+    Source: searchParams.get('Source') || "All",
     OrderImportId: "",
   });
 
+  const [filtersDebounced] = useDebounce(filters, 1400);
+
   useEffect(() => {
+    const params: Record<string, string> = {
+      page: currentPage.toString(),
+      ...Object.entries(filters).reduce((acc, [key, value]) => {
+        if (value !== null && value !== "") {
+          acc[key] = value.toString();
+        }
+        return acc;
+      }, {} as Record<string, string>)
+    };
+
+    setSearchParams(params);
+  }, [filters, currentPage, setSearchParams]);
+
+  useEffect(() => {
+    console.log('call');
+    
     const fetchOrders = async () => {
       setIsLoading(true);
       try {
@@ -34,7 +56,7 @@ export const OrdersList = () => {
           params: {
             PageSize: ITEMS_PER_PAGE,
             Page: currentPage,
-            ...filters,
+            ...filtersDebounced,
           },
         });
 
@@ -52,7 +74,7 @@ export const OrdersList = () => {
     };
 
     fetchOrders();
-  }, [currentPage]);
+  }, [currentPage, filtersDebounced]);
 
   const handlePageChange = (selectedItem: { selected: number }) => {
     setCurrentPage(selectedItem.selected + 1);
@@ -60,7 +82,7 @@ export const OrdersList = () => {
 
   return (
     <div>
-      <Filters />
+      <Filters filters={filters} setFilters={setFilters} />
       <Table
         orders={orders}
         pageCount={totalPages}

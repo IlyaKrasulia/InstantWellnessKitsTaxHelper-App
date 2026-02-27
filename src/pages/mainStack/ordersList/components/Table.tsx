@@ -9,7 +9,7 @@ import {
 } from "@/utils/styles";
 import { OrderListItem } from "@/utils/types";
 import { MapPin } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactPaginate from "react-paginate";
 import styled from "styled-components";
 
@@ -24,11 +24,16 @@ export const Table = ({
   orders,
   pageCount,
   onPageChange,
-  isLoading,
 }: IProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    containerRef.current.scroll({top: -9999});
+  }, [onPageChange])
+
   return (
     <>
-      <TableContainer>
+      <TableContainer ref={containerRef}>
         <StyledTable>
           <thead>
             <tr>
@@ -111,6 +116,7 @@ const TableContainer = styled.div`
   border: 1px solid ${COLORS.border};
   margin-top: ${SPACING.lg};
   box-shadow: ${SHADOWS.soft};
+  height: 40%;
 `;
 
 const StyledTable = styled.table`
