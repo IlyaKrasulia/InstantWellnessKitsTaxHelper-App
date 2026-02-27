@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { CustomButton } from "@/components/CustomButton";
 import { CustomInput } from "@/components/CustomInput";
 import { SPACING } from "@/utils/styles";
@@ -5,6 +6,9 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { ManualOrderData, manualOrderSchema } from "./validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import api from "@/api/instance";
+import { Endpoints } from "@/api/endpoints";
+import { toast } from "react-toastify";
 
 export const CreateManualOrder = () => {
   const {
@@ -18,8 +22,34 @@ export const CreateManualOrder = () => {
   });
 
   const onSubmit = (data: ManualOrderData) => {
-    void data;
-    // TODO: send via API/service layer
+    console.log({
+      latitude: data.lat,
+      longitude: data.lon,
+      subtotal: data.subtotal,
+      timestamp: new Date().toISOString(),
+    });
+
+    try {
+      const date = new Date();
+      const formattedDate = format(date, "yyyy-MM-dd HH:mm:ss");
+
+      api
+        .post(Endpoints.POST_ORDER, {
+          latitude: data.lat,
+          longitude: data.lon,
+          subtotal: data.subtotal,
+          timestamp: formattedDate,
+        })
+        .then((res) => {
+          toast.success(res.data.message || "Order created successfully!");
+          reset();
+        })
+        .catch((err) => {
+          toast.error("Unvalid input data. Please check your entries.");
+        });
+    } catch (error) {
+      console.error("Failed to create order:", error);
+    }
   };
 
   return (
@@ -56,7 +86,12 @@ export const CreateManualOrder = () => {
         />
       </div>
       <Footer>
-        <CustomButton onClick={() => reset()} size="large" variant="error" style={{ width: "100%" }}>
+        <CustomButton
+          onClick={() => reset()}
+          size="large"
+          variant="error"
+          style={{ width: "100%" }}
+        >
           Clear Form
         </CustomButton>
         <CustomButton
