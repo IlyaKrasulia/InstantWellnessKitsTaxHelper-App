@@ -3,6 +3,6 @@ export enum Endpoints {
   USER_INFO = '/Auth/me',
   LOGOUT = '/Auth/logout',
   IMPORT_ORDERS = '/Orders/import',
-  POST_ORDER = '/api/Orders',
-  GET_ORDERS = '/api/Orders',
+  POST_ORDER = '/Orders',
+  GET_ORDERS = '/Orders',
 }
