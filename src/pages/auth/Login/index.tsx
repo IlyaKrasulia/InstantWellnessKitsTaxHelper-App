@@ -34,14 +34,21 @@ export const LoginPage = () => {
   });
 
   const onSubmit = (data: AuthFormData) => {
-    api.post(Endpoints.LOGIN, data).then((res) => {
-      if (res.data.isSuccess) {
-        localStorage.setItem("isLogin", "1");
-        navigate("/");
-      } else {
-        toast.error(res.data.message || "Login failed");
-      }
-    });
+    api
+      .post(Endpoints.LOGIN, data)
+      .then((res) => {
+        if (res.data.isSuccess) {
+          localStorage.setItem("isLogin", "1");
+          navigate("/");
+        } else {
+          toast.error(res.data.message || "Login failed");
+        }
+      })
+      .catch((error) => {
+        toast.error(
+          error.response?.data?.message || "Network error. Please try again.",
+        );
+      });
   };
 
   return (

@@ -34,12 +34,15 @@ export const AppLayout = () => {
   };
 
   const onLogout = () => {
-    api.post(Endpoints.LOGOUT).then(() => {
-      localStorage.removeItem("isLogin");
-      navigate(RouteNames.LOGIN, { replace: true });
-    }).catch(() => {
-      toast.error
-    });
+    api
+      .post(Endpoints.LOGOUT)
+      .then(() => {
+        localStorage.removeItem("isLogin");
+        navigate(RouteNames.LOGIN, { replace: true });
+      })
+      .catch(() => {
+        toast.error("Logout failed. Please try again.");
+      });
   };
 
   return (
