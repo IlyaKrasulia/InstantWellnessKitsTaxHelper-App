@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { COLORS, FONTS } from "@styles";
 
 const SIZES = {
@@ -58,6 +58,20 @@ const VARIANTS = {
   `,
 };
 
+const rotate = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+const Spinner = styled.div`
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: ${rotate} 0.8s linear infinite;
+`;
+
 const StyledButton = styled.button<StyledButtonProps>`
   font-family: ${FONTS.family};
   display: inline-flex;
@@ -88,6 +102,7 @@ export interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
+  isLoading?: boolean;
 }
 
 type ButtonSize = keyof typeof SIZES;
@@ -104,6 +119,7 @@ export const CustomButton = ({
   variant = "primary",
   size = "medium",
   fullWidth = false,
+  isLoading = false,
   ...props
 }: IProps) => {
   return (
@@ -111,9 +127,10 @@ export const CustomButton = ({
       $variant={variant}
       $size={size}
       $fullWidth={fullWidth}
+      disabled={isLoading}
       {...props}
     >
-      {children}
+      {isLoading ? <Spinner /> : children}
     </StyledButton>
   );
 };

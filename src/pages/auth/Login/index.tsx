@@ -14,9 +14,13 @@ import { CustomButton } from "@/components/CustomButton";
 import logo from "@assets/images/logo.svg";
 import loginIcon from "@assets/images/login.svg";
 import { useForm } from "react-hook-form";
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthFormData, authSchema } from "./validation";
 import { useNavigate } from "react-router-dom";
+import api from "@/api/instance";
+import { Endpoints } from "@/api/endpoints";
+import { RouteNames } from "@/utils/routes";
+import { toast } from "react-toastify";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -26,12 +30,18 @@ export const LoginPage = () => {
     formState: { errors },
   } = useForm<AuthFormData>({
     resolver: zodResolver(authSchema),
-    mode: 'onTouched',
+    mode: "onTouched",
   });
 
   const onSubmit = (data: AuthFormData) => {
-    localStorage.setItem('isLogin', '1')
-    navigate('/');
+    api.post(Endpoints.LOGIN, data).then((res) => {
+      if (res.data.isSuccess) {
+        localStorage.setItem("isLogin", "1");
+        navigate("/");
+      } else {
+        toast.error(res.data.message || "Login failed");
+      }
+    });
   };
 
   return (
@@ -64,8 +74,8 @@ export const LoginPage = () => {
             label="Email Address"
             placeholder="example@mail.com"
             fullWidth
-            error={errors.email?.message}
-            {...register('email')}
+            error={errors.login?.message}
+            {...register("login")}
           />
 
           <CustomInput
@@ -74,7 +84,7 @@ export const LoginPage = () => {
             placeholder="••••••••"
             fullWidth
             error={errors.password?.message}
-            {...register('password')}
+            {...register("password")}
           />
 
           <CustomButton
@@ -82,6 +92,7 @@ export const LoginPage = () => {
             fullWidth
             style={{ marginTop: "10px" }}
             type="submit"
+            isLoading={false}
           >
             Sign In
           </CustomButton>
