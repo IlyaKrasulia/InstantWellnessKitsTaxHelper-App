@@ -37,7 +37,12 @@ yarn install
 ```
 
 ### 3. Environment Variables
-Create a `.env` file:
+Create a `.env` file: 
+For Local -
+```env
+VITE_API_URL=http://localhost:5045/api/
+```
+For Prod - 
 ```env
 VITE_API_URL=https://betterme-tax-helper-3d47c59cf1f5.herokuapp.com/api
 ```
