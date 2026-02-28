@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -12,10 +12,8 @@ import { IOrderDetail } from "@/utils/types";
 import api from "@/api/instance";
 import { Endpoints } from "@/api/endpoints";
 import { openInGoogleMaps } from "@/utils/openGoogleMaps";
-import { Link } from "lucide-react";
 
 export const OrderDetails = () => {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
   const [data, setData] = useState<IOrderDetail | null>(null);
@@ -27,16 +25,12 @@ export const OrderDetails = () => {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       api.get(`${Endpoints.GET_ORDERS}/${id}`).then((response) => {
-        console.log(response);
-
         setData(response.data);
       });
     };
 
     fetchOrderDetails();
   }, []);
-
-  console.log(id);
 
   if (!data) {
     return (

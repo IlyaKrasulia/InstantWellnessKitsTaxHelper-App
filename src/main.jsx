@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import "./index.css";
