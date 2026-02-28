@@ -25,4 +25,19 @@ api.interceptors.response.use(
   }
 );
 
+api.interceptors.request.use(
+  (config) => {
+    // Генеруємо повний URL за допомогою вбудованого методу Axios
+    const fullUrl = api.getUri(config);
+    
+    console.log(`🚀 Виконується запит на: ${fullUrl}`);
+    console.log('Параметри запиту:', config.params);
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export default api;

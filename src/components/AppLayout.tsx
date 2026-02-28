@@ -71,12 +71,6 @@ export const AppLayout = () => {
           </NavMenu>
 
           <BottomMenu>
-            <NavItem>
-              <span>
-                <HelpCircle />
-              </span>{" "}
-              Get Help
-            </NavItem>
             <NavItem
               $logout
               onClick={onLogout}

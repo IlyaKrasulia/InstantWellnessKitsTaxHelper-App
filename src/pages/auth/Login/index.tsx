@@ -20,9 +20,13 @@ import { useNavigate } from "react-router-dom";
 import api from "@/api/instance";
 import { Endpoints } from "@/api/endpoints";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -33,6 +37,7 @@ export const LoginPage = () => {
   });
 
   const onSubmit = (data: AuthFormData) => {
+    setIsLoading(true);
     api
       .post(Endpoints.LOGIN, data)
       .then((res) => {
@@ -47,6 +52,8 @@ export const LoginPage = () => {
         toast.error(
           error.response?.data?.message || "Network error. Please try again.",
         );
+      }).finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -98,7 +105,7 @@ export const LoginPage = () => {
             fullWidth
             style={{ marginTop: "10px" }}
             type="submit"
-            isLoading={false}
+            isLoading={isLoading}
           >
             Sign In
           </CustomButton>

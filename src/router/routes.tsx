@@ -7,6 +7,7 @@ import { RouteNames } from "@/utils/routes";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ErrorPage } from "@/pages/mainStack/ErrorPage";
 import { OrdersList } from "@/pages/mainStack/OrdersList/index.tsx";
+import { OrderDetails } from "@/pages/mainStack/OrderDetails";
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +50,14 @@ export const router = createBrowserRouter([
               info: "Manage and review all processed transactions and their tax calculations.",
             },
           },
+          {
+            path: RouteNames.ORDER_DETAILS,
+            element: <OrderDetails />,
+            handle: {
+              title: "Order Details",
+              info: "View detailed information and tax breakdown for a specific order.",
+            },
+          }
         ],
       },
     ],

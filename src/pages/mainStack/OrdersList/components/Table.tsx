@@ -17,12 +17,14 @@ interface IProps {
   pageCount: number;
   onPageChange: (selectedItem: { selected: number }) => void;
   isLoading: boolean;
+  onClickOrder: (id: string) => void;
 }
 
 export const Table = ({
   orders,
   pageCount,
   onPageChange,
+  onClickOrder,
 }: IProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +48,7 @@ export const Table = ({
           </thead>
           <tbody>
             {orders.map((order) => (
-              <Tr key={order.id}>
+              <Tr key={order.id} onClick={() => onClickOrder(order.id)}>
                 <Td>
                   {new Date(order.timestamp).toLocaleDateString("en-US", {
                     month: "short",

@@ -5,28 +5,37 @@ import { OrderListItem } from "@/utils/types";
 import api from "@/api/instance";
 import { Endpoints } from "@/api/endpoints";
 import { useDebounce } from "use-debounce";
-import { useSearchParams } from "react-router-dom";
+import { generatePath, useNavigate, useSearchParams } from "react-router-dom";
+import { RouteNames } from "@/utils/routes";
 
 const ITEMS_PER_PAGE = 13;
 
 export const OrdersList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const navigate = useNavigate();
+
   const [orders, setOrders] = useState<OrderListItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(Number(searchParams.get('page')) || 1);
+  const [totalPages, setTotalPages] = useState(
+    Number(searchParams.get("page")) || 1,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState({
-    FromDate: searchParams.get('FromDate') || "",
-    ToDate: searchParams.get('ToDate') || "",
-    County: searchParams.get('County') || "",
-    City: searchParams.get('City') || "",
+    FromDate: searchParams.get("FromDate") || "",
+    ToDate: searchParams.get("ToDate") || "",
+    County: searchParams.get("County") || "",
+    City: searchParams.get("City") || "",
     Jurisdiction: "",
-    MinTotal: searchParams.get('MinTotal') ? Number(searchParams.get('MinTotal')) : null,
-    MaxTotal: searchParams.get('MaxTotal') ? Number(searchParams.get('MaxTotal')) : null,
-    SortBy: searchParams.get('SortBy') || "Price",
-    SortDescending: searchParams.get('SortDescending') || "True",
-    Source: searchParams.get('Source') || "All",
+    MinTotal: searchParams.get("MinTotal")
+      ? Number(searchParams.get("MinTotal"))
+      : null,
+    MaxTotal: searchParams.get("MaxTotal")
+      ? Number(searchParams.get("MaxTotal"))
+      : null,
+    SortBy: searchParams.get("SortBy") || "Price",
+    SortDescending: searchParams.get("SortDescending") || "True",
+    Source: searchParams.get("Source") || "All",
     OrderImportId: "",
   });
 
@@ -35,20 +44,21 @@ export const OrdersList = () => {
   useEffect(() => {
     const params: Record<string, string> = {
       page: currentPage.toString(),
-      ...Object.entries(filters).reduce((acc, [key, value]) => {
-        if (value !== null && value !== "") {
-          acc[key] = value.toString();
-        }
-        return acc;
-      }, {} as Record<string, string>)
+      ...Object.entries(filters).reduce(
+        (acc, [key, value]) => {
+          if (value !== null && value !== "") {
+            acc[key] = value.toString();
+          }
+          return acc;
+        },
+        {} as Record<string, string>,
+      ),
     };
 
     setSearchParams(params);
   }, [filters, currentPage, setSearchParams]);
 
   useEffect(() => {
-    console.log('call');
-    
     const fetchOrders = async () => {
       setIsLoading(true);
       try {
@@ -80,6 +90,10 @@ export const OrdersList = () => {
     setCurrentPage(selectedItem.selected + 1);
   };
 
+  const onClickOrder = (id: string) => {
+    navigate(generatePath(RouteNames.ORDER_DETAILS, { id }));
+  };
+
   return (
     <div>
       <Filters filters={filters} setFilters={setFilters} />
@@ -88,6 +102,7 @@ export const OrdersList = () => {
         pageCount={totalPages}
         onPageChange={handlePageChange}
         isLoading={isLoading}
+        onClickOrder={(id) => onClickOrder(id)}
       />
     </div>
   );

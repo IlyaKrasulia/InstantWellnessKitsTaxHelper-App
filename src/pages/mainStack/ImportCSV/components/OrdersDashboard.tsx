@@ -32,9 +32,7 @@ interface IProps {
   orders: IOrderImportResponse;
 }
 
-export const OrdersDashboard = ({
-  orders,
-}: IProps) => {
+export const OrdersDashboard = ({ orders }: IProps) => {
   const [selectedOrder, setSelectedOrder] = useState<IOrderDetail | null>(null);
   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
 
@@ -67,7 +65,8 @@ export const OrdersDashboard = ({
       const response = await api.get<IOrderDetail>(url);
       setSelectedOrder(response.data);
     } catch (error) {
-      console.error("Помилка завантаження рядка замовлення:", error);
+      console.error(error);
+      
     } finally {
       setIsDetailsLoading(false);
     }
@@ -177,8 +176,7 @@ export const OrdersDashboard = ({
             <JurisdictionList>
               {selectedOrder.jurisdictions.map((j, idx) => (
                 <JurisdictionTag key={idx} title={`${j.type}: ${j.name}`}>
-                  <span className="type">{j.type}</span>
-                  <span className="code">{j.code}</span>
+                  <span className="type">{j.name}</span>
                 </JurisdictionTag>
               ))}
             </JurisdictionList>
@@ -383,10 +381,5 @@ const JurisdictionTag = styled.div`
     color: ${COLORS.textSecondary};
     font-family: ${FONTS.family};
     text-transform: uppercase;
-  }
-  .code {
-    font-size: ${FONT_SIZES.body};
-    font-weight: ${FONTS.weight.bold};
-    color: ${COLORS.primarySolid};
   }
 `;
