@@ -111,7 +111,7 @@ const MainContent = styled.main`
   padding: 40px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: hidden;
 `;
 
 const NavMenu = styled.nav`
