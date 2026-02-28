@@ -110,14 +110,12 @@ export const Table = ({
 
 const TableContainer = styled.div`
   width: 100%;
-  overflow-x: auto;
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(12px);
   border-radius: ${BORDER_RADIUS.medium};
   border: 1px solid ${COLORS.border};
   margin-top: ${SPACING.lg};
   box-shadow: ${SHADOWS.soft};
-  height: 40%;
 `;
 
 const StyledTable = styled.table`
