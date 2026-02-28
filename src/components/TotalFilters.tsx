@@ -8,7 +8,7 @@ interface IProps {
 }
 
 export const TotalFilters = ({ filters, setFilters }: IProps) => {
-  const handleUpdate = (key: keyof IFilters, value: any) => {
+  const handleUpdate = (key: keyof IFilters, value: string) => {
     const processedValue = value === "" ? null : Number(value);
 
     setFilters({

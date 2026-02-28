@@ -1,4 +1,3 @@
-import { MOCK_ORDERS } from "@/mock/orders";
 import {
   BORDER_RADIUS,
   COLORS,
@@ -9,7 +8,7 @@ import {
 } from "@/utils/styles";
 import { OrderListItem } from "@/utils/types";
 import { MapPin } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import ReactPaginate from "react-paginate";
 import styled from "styled-components";
 
@@ -28,7 +27,7 @@ export const Table = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    containerRef.current.scroll({top: -9999});
+    containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [onPageChange])
 
   return (

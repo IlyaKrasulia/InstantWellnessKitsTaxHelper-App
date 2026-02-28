@@ -1,11 +1,10 @@
 import { CustomButton } from "@/components/CustomButton";
-import { CustomInput } from "@/components/CustomInput";
 import { DateFilters } from "@/components/DatePicker";
 import { Dropdown } from "@/components/Dropdown";
 import { TotalFilters } from "@/components/TotalFilters";
 import { COUNTY_OPTIONS, NY_LOCATIONS } from "@/utils/locations";
-import { COLORS, FONTS, SPACING } from "@/utils/styles";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { SPACING } from "@/utils/styles";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import "react-dropdown/style.css";
 import styled from "styled-components";
 
@@ -46,7 +45,7 @@ interface IProps {
 }
 
 export const Filters = ({ filters, setFilters }: IProps) => {
-  const handleUpdate = (key: keyof IFilters, value: any) => {
+  const handleUpdate = (key: keyof IFilters, value: string | number | null) => {
     setFilters((prev) => ({
     ...prev,
     [key]: value,

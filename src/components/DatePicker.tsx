@@ -13,7 +13,7 @@ export const DateFilters = ({ filters, setFilters }: IProps) => {
     const fromDate = filters.FromDate ? new Date(filters.FromDate) : null;
     const toDate = filters.ToDate ? new Date(filters.ToDate) : null;
 
-    const handleUpdate = (key: keyof IFilters, value: any) => {
+    const handleUpdate = (key: keyof IFilters, value: string) => {
         setFilters({
             ...filters,
             [key]: value,
