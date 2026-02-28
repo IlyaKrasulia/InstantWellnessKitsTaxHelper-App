@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Outlet, useMatches, useNavigate } from "react-router-dom";
 import { BORDER_RADIUS, COLORS, FONT_SIZES, FONTS, SPACING } from "@styles";
 import logo from "@assets/images/logo-black.svg";
-import { File, HelpCircle, Import, ListOrdered, LogOut } from "lucide-react";
+import { File, HelpCircle, Import, ImportIcon, ListOrdered, LogOut } from "lucide-react";
 import { RouteNames } from "@/utils/routes";
 import { MainBG } from "./MainBG";
 import { GlassContainer } from "./GlassContainer";
@@ -19,6 +19,7 @@ const TABS = [
   { name: "Import CSV", icon: <Import />, path: RouteNames.IMPORT },
   { name: "Manual Create", icon: <File />, path: RouteNames.CREATE },
   { name: "Orders List", icon: <ListOrdered />, path: RouteNames.ORDERS },
+  { name: "Imports List", icon: <ImportIcon />, path: RouteNames.IMPORTS_LIST },
 ];
 
 export const AppLayout = () => {
