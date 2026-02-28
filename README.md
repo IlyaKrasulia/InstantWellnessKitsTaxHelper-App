@@ -51,3 +51,9 @@ yarn dev
 ```bash
 yarn build
 ```
+
+### 6. Deployment url
+```bash
+https://bettermeadmin1.vercel.app/
+```
+
