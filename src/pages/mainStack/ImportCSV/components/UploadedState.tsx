@@ -46,6 +46,7 @@ export const UploadedState = ({
           variant="secondary"
           style={{ display: "block", margin: "0 auto", marginTop: SPACING.md }}
           onClick={onSubmit}
+          disabled={isLoading}
         >
           {isError ? "Try Another File" : "Select other file"}
         </CustomButton>

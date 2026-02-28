@@ -1,7 +1,6 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import styled from "styled-components";
-import { MapContainer, TileLayer, CircleMarker } from "react-leaflet";
-import MarkerClusterGroup from "react-leaflet-cluster";
+import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import {
   COLORS,
@@ -15,6 +14,7 @@ import { IOrderDetail, IOrderImportResponse, IOrderPoint } from "@/utils/types";
 import { compile, Endpoints } from "@/api/endpoints";
 import api from "@/api/instance";
 import { CustomButton } from "@/components/CustomButton";
+import { OrderDetailsSkeleton } from "./OrderDetailsSkeleton";
 
 export interface IOrder {
   id: string | number;
@@ -28,21 +28,13 @@ export interface IOrder {
   source: string;
 }
 
-interface OrdersDashboardProps {
+interface IProps {
   orders: IOrderImportResponse;
-  isLoading?: boolean;
 }
 
-const mockMarkers = Array.from({ length: 11000 }, (_, i) => ({
-  id: i + 1,
-  lat: 40.5 + Math.random() * 4.5,
-  lon: -79.8 + Math.random() * 8,
-}));
-
-export const OrdersDashboard: React.FC<OrdersDashboardProps> = ({
+export const OrdersDashboard = ({
   orders,
-  isLoading,
-}) => {
+}: IProps) => {
   const [selectedOrder, setSelectedOrder] = useState<IOrderDetail | null>(null);
   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
 
@@ -67,13 +59,11 @@ export const OrdersDashboard: React.FC<OrdersDashboardProps> = ({
     setIsDetailsLoading(true);
 
     try {
-      // Формуємо динамічний URL
       const url = compile(Endpoints.GET_ORDER_ROW, {
         orderImportId: marker.orderImportId,
         rowId: marker.rowId,
       });
 
-      // Відправляємо запит через axios
       const response = await api.get<IOrderDetail>(url);
       setSelectedOrder(response.data);
     } catch (error) {
@@ -82,8 +72,6 @@ export const OrdersDashboard: React.FC<OrdersDashboardProps> = ({
       setIsDetailsLoading(false);
     }
   };
-
-  if (isLoading) return <div>Loading dashboard data...</div>;
 
   return (
     <DashboardLayout>
@@ -117,7 +105,9 @@ export const OrdersDashboard: React.FC<OrdersDashboardProps> = ({
       </MainContent>
 
       <Sidebar>
-        {selectedOrder ? (
+        {isDetailsLoading ? (
+          <OrderDetailsSkeleton />
+        ) : selectedOrder ? (
           <DetailsContent>
             <SidebarTitle>Order Details</SidebarTitle>
             <InfoGroup>
@@ -195,7 +185,12 @@ export const OrdersDashboard: React.FC<OrdersDashboardProps> = ({
             <CustomButton
               onClick={() => setSelectedOrder(null)}
               variant="secondary"
-              style={{position: "sticky", bottom: 0, marginTop: SPACING.lg, width: "100%" }}
+              style={{
+                position: "sticky",
+                bottom: 0,
+                marginTop: SPACING.lg,
+                width: "100%",
+              }}
             >
               Close Details
             </CustomButton>
@@ -288,7 +283,7 @@ const StatLabel = styled.span`
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: ${SPACING.xs};
 `;
 
 const StatValue = styled.div`
@@ -335,25 +330,6 @@ const InfoGroup = styled.div`
   margin-bottom: ${SPACING.xl};
 `;
 
-const CloseButton = styled.button`
-  margin-top: auto;
-  padding: 12px;
-  background: transparent;
-  border: 1px solid ${COLORS.border};
-  border-radius: ${BORDER_RADIUS.medium};
-  color: ${COLORS.textSecondary};
-  font-family: ${FONTS.family};
-  font-weight: ${FONTS.weight.medium};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: #f1f5f9;
-    color: ${COLORS.textPrimary};
-    border-color: ${COLORS.gray};
-  }
-`;
-
 const EmptySidebar = styled.div`
   display: flex;
   flex-direction: column;
@@ -380,7 +356,7 @@ const EmptySidebar = styled.div`
 
 const SectionTitle = styled.h3`
   font-size: 12px;
-  font-weight: bold;
+  font-weight: ${FONTS.weight.bold};
   color: ${COLORS.textSecondary};
   text-transform: uppercase;
   margin: ${SPACING.md} 0 ${SPACING.xs};
@@ -390,7 +366,7 @@ const SectionTitle = styled.h3`
 const JurisdictionList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: ${SPACING.sm};
   margin-top: ${SPACING.xs};
 `;
 
@@ -403,14 +379,14 @@ const JurisdictionTag = styled.div`
   border-radius: ${BORDER_RADIUS.small};
 
   .type {
-    font-size: 9px;
+    font-size: ${FONT_SIZES.small};
     color: ${COLORS.textSecondary};
     font-family: ${FONTS.family};
     text-transform: uppercase;
   }
   .code {
-    font-size: 13px;
-    font-weight: bold;
+    font-size: ${FONT_SIZES.body};
+    font-weight: ${FONTS.weight.bold};
     color: ${COLORS.primarySolid};
   }
 `;
