@@ -1,16 +1,53 @@
-# React + Vite
+# Instant Wellness Kits Tax Helper
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive dashboard designed for visualizing, calculating, and managing tax data for wellness kit orders. Developed by **ilyakras** as part of the **INT20H** hackathon.
 
-Currently, two official plugins are available:
+## 🚀 Solution Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The application provides a centralized platform for financial analysts to import order data via CSV and analyze tax distributions across different jurisdictions. It handles complex tax calculations (State, County, City) and visualizes them on an interactive map with optimized marker clustering for 11,000+ data points.
 
-## React Compiler
+### Key Features:
+* **Interactive Map:** High-performance clustering using `react-leaflet-cluster`.
+* **Detailed Tax Breakdown:** Granular view of tax rates and jurisdictions for every transaction.
+* **Geo-Tracking:** Integration with Google Maps for precise location verification.
+* **Import Management:** Historical tracking of all processed CSV files with automatic order counts.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 💻 Tech Stack
+* **Framework:** React 18 + Vite
+* **Language:** TypeScript (for type-safe financial data handling)
+* **Styling:** `styled-components`
+* **Navigation:** React Router 6 (using Path Parameters for deep linking)
+* **API:** Axios with custom interceptors for response handling
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠 Setup & Running Instructions
+
+### 1. Prerequisites
+* **Node.js**: v18.0.0 or higher
+* **Yarn**: v1.22.x (recommended) or NPM
+
+### 2. Installation
+```bash
+git clone https://github.com/IlyaKrasulia/InstantWellnessKitsTaxHelper-App.git
+cd InstantWellnessKitsTaxHelper-App
+yarn install
+```
+
+### 3. Environment Variables
+Create a `.env` file:
+```env
+VITE_API_URL=https://betterme-tax-helper-3d47c59cf1f5.herokuapp.com/api
+```
+
+### 4. Local Development
+```bash
+yarn dev
+```
+
+### 5. Production Build
+```bash
+yarn build
+```
