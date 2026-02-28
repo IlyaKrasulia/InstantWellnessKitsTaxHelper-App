@@ -4,5 +4,5 @@ export enum Endpoints {
   LOGOUT = '/Auth/logout',
   IMPORT_ORDERS = '/Orders/import',
   POST_ORDER = '/Orders',
-  GET_ORDERS = '/Orders',
+  GET_ORDERS = POST_ORDER,
 }

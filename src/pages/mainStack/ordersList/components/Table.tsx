@@ -1,4 +1,3 @@
-import { MOCK_ORDERS } from "@/mock/orders";
 import {
   BORDER_RADIUS,
   COLORS,
@@ -7,30 +6,33 @@ import {
   SHADOWS,
   SPACING,
 } from "@/utils/styles";
+import { OrderListItem } from "@/utils/types";
 import { MapPin } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import ReactPaginate from "react-paginate";
 import styled from "styled-components";
 
-const ITEMS_PER_PAGE = 5;
+interface IProps {
+  orders: OrderListItem[];
+  pageCount: number;
+  onPageChange: (selectedItem: { selected: number }) => void;
+  isLoading: boolean;
+}
 
-export const Table = () => {
-  const [itemOffset, setItemOffset] = useState(0);
+export const Table = ({
+  orders,
+  pageCount,
+  onPageChange,
+}: IProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const endOffset = itemOffset + ITEMS_PER_PAGE;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  const currentOrders = MOCK_ORDERS.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(MOCK_ORDERS.length / ITEMS_PER_PAGE);
-
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * ITEMS_PER_PAGE) % MOCK_ORDERS.length;
-
-    setItemOffset(newOffset);
-  };
+  useEffect(() => {
+    containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [onPageChange])
 
   return (
     <>
-      <TableContainer>
+      <TableContainer ref={containerRef}>
         <StyledTable>
           <thead>
             <tr>
@@ -43,7 +45,7 @@ export const Table = () => {
             </tr>
           </thead>
           <tbody>
-            {currentOrders.map((order) => (
+            {orders.map((order) => (
               <Tr key={order.id}>
                 <Td>
                   {new Date(order.timestamp).toLocaleDateString("en-US", {
@@ -83,12 +85,12 @@ export const Table = () => {
         <ReactPaginate
           breakLabel="..."
           nextLabel=">"
-          onPageChange={handlePageClick}
+          onPageChange={onPageChange}
           pageRangeDisplayed={5}
           pageCount={pageCount}
           previousLabel="<"
-
           containerClassName="pagination"
+          activeClassName="active"
           pageClassName="page-item"
           pageLinkClassName="page-link"
           previousClassName="page-item"
@@ -97,7 +99,6 @@ export const Table = () => {
           nextLinkClassName="page-link"
           breakClassName="page-item"
           breakLinkClassName="page-link"
-          activeClassName="active"
           disabledClassName="disabled"
         />
       </PaginationWrapper>
@@ -114,6 +115,7 @@ const TableContainer = styled.div`
   border: 1px solid ${COLORS.border};
   margin-top: ${SPACING.lg};
   box-shadow: ${SHADOWS.soft};
+  height: 40%;
 `;
 
 const StyledTable = styled.table`

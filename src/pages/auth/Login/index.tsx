@@ -19,7 +19,6 @@ import { AuthFormData, authSchema } from "./validation";
 import { useNavigate } from "react-router-dom";
 import api from "@/api/instance";
 import { Endpoints } from "@/api/endpoints";
-import { RouteNames } from "@/utils/routes";
 import { toast } from "react-toastify";
 
 export const LoginPage = () => {

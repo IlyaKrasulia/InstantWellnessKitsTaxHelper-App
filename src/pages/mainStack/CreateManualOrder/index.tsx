@@ -37,7 +37,7 @@ export const CreateManualOrder = () => {
           toast.success(res.data.message || "Order created successfully!");
           reset();
         })
-        .catch((err) => {
+        .catch(() => {
           toast.error("Unvalid input data. Please check your entries.");
         });
     } catch (error) {
