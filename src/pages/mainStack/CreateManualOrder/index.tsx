@@ -10,6 +10,7 @@ import api from "@/api/instance";
 import { Endpoints } from "@/api/endpoints";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import z from "zod";
 
 export const CreateManualOrder = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +20,7 @@ export const CreateManualOrder = () => {
     handleSubmit,
     reset,
     formState: { errors, isValid },
-  } = useForm<ManualOrderData>({
+  } = useForm<z.input<typeof manualOrderSchema>>({
     resolver: zodResolver(manualOrderSchema),
     mode: "onChange",
   });

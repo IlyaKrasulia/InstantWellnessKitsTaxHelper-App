@@ -1,16 +1,16 @@
 import styled, { css } from "styled-components";
-import { COLORS, FONTS } from "@styles";
+import { COLORS, FONT_SIZES, FONTS } from "@styles";
 import { InputHTMLAttributes } from "react";
 
 const SIZES = {
   small: css`
     padding: 10px 12px;
-    font-size: 14px;
+    font-size: ${FONT_SIZES.small};
     border-radius: 10px;
   `,
   medium: css`
     padding: 14px 16px;
-    font-size: 16px;
+    font-size: ${FONT_SIZES.body};
     border-radius: 12px;
   `,
   large: css`
@@ -18,6 +18,31 @@ const SIZES = {
     font-size: 18px;
     border-radius: 14px;
   `,
+};
+
+interface IProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+  hasError?: boolean;
+  fullWidth?: boolean;
+  sizeVariant?: keyof typeof SIZES;
+}
+
+export const CustomInput = ({
+  label,
+  error,
+  fullWidth,
+  hasError,
+  sizeVariant = "medium",
+  ...props
+}: IProps) => {
+  return (
+    <InputContainer $fullWidth={fullWidth}>
+      {label && <Label>{label}</Label>}
+      <StyledInput $size={sizeVariant} $hasError={hasError} {...props} />
+      {error && <ErrorText>{error}</ErrorText>}
+    </InputContainer>
+  );
 };
 
 const InputContainer = styled.div<{ $fullWidth?: boolean }>`
@@ -43,7 +68,8 @@ const StyledInput = styled.input<StyledInputProps>`
   font-family: "Gilroy-Regular", sans-serif;
   background-color: ${COLORS.surface};
   color: ${COLORS.textPrimary};
-  border: 1px solid ${(props) => (props.$hasError ? COLORS.error : COLORS.border)};
+  border: 1px solid
+    ${(props) => (props.$hasError ? COLORS.error : COLORS.border)};
   transition: all 0.2s ease-in-out;
 
   ${(props) => SIZES[props.$size]}
@@ -71,28 +97,3 @@ const ErrorText = styled.span`
   color: ${COLORS.error};
   padding-left: 4px;
 `;
-
-interface IProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  hasError?: boolean;
-  fullWidth?: boolean;
-  sizeVariant?: keyof typeof SIZES;
-}
-
-export const CustomInput = ({
-  label,
-  error,
-  fullWidth,
-  hasError,
-  sizeVariant = 'medium',
-  ...props
-}: IProps) => {
-  return (
-    <InputContainer $fullWidth={fullWidth}>
-      {label && <Label>{label}</Label>}
-      <StyledInput $size={sizeVariant} $hasError={hasError} {...props} />
-      {error && <ErrorText>{error}</ErrorText>}
-    </InputContainer>
-  );
-};

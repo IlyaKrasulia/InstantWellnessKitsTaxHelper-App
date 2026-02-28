@@ -1,3 +1,5 @@
+// ------ ORDERS LIST ------
+
 export interface OrderListItem {
   id: string; // Guid
   latitude: number;
@@ -32,6 +34,8 @@ export interface SpecialRateDto {
 export interface ITaxStats {
   [key: string]: number;
 }
+
+// ------ ORDER IMPORT ------
 
 export interface IImportMetrics {
   orderImportId: string;

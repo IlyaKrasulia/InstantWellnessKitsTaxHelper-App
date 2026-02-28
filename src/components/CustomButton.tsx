@@ -21,6 +21,44 @@ const SIZES = {
   `,
 };
 
+export interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  fullWidth?: boolean;
+  isLoading?: boolean;
+}
+
+type ButtonSize = keyof typeof SIZES;
+type ButtonVariant = keyof typeof VARIANTS;
+
+interface StyledButtonProps {
+  $size: ButtonSize;
+  $variant: ButtonVariant;
+  $fullWidth?: boolean;
+}
+
+export const CustomButton = ({
+  children,
+  variant = "primary",
+  size = "medium",
+  fullWidth = false,
+  isLoading = false,
+  ...props
+}: IProps) => {
+  return (
+    <StyledButton
+      $variant={variant}
+      $size={size}
+      $fullWidth={fullWidth}
+      disabled={isLoading}
+      {...props}
+    >
+      {isLoading ? <Spinner /> : children}
+    </StyledButton>
+  );
+};
+
 const VARIANTS = {
   primary: css`
     background: ${COLORS.primarySolid};
@@ -97,41 +135,3 @@ const StyledButton = styled.button<StyledButtonProps>`
     transform: none;
   }
 `;
-
-export interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  fullWidth?: boolean;
-  isLoading?: boolean;
-}
-
-type ButtonSize = keyof typeof SIZES;
-type ButtonVariant = keyof typeof VARIANTS;
-
-interface StyledButtonProps {
-  $size: ButtonSize;
-  $variant: ButtonVariant;
-  $fullWidth?: boolean;
-}
-
-export const CustomButton = ({
-  children,
-  variant = "primary",
-  size = "medium",
-  fullWidth = false,
-  isLoading = false,
-  ...props
-}: IProps) => {
-  return (
-    <StyledButton
-      $variant={variant}
-      $size={size}
-      $fullWidth={fullWidth}
-      disabled={isLoading}
-      {...props}
-    >
-      {isLoading ? <Spinner /> : children}
-    </StyledButton>
-  );
-};

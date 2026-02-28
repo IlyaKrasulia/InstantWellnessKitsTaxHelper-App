@@ -11,8 +11,6 @@ export const ImportDetails = () => {
   const [importDetails, setImportDetails] =
     useState<IOrderImportResponse | null>(null);
 
-  console.log(id);
-
   useEffect(() => {
     const fetchImportDetails = async () => {
       try {

@@ -39,7 +39,6 @@ export const ImportCSVPage = () => {
 
   const handleFile = (file: File) => {
     setSelectedFile(file);
-    console.log("Processing file:", file.name);
   };
 
   const handleFilesFromDrop = (file: File) => {
@@ -72,7 +71,6 @@ export const ImportCSVPage = () => {
         },
       });
 
-      console.log("Upload success:", response);
       setOrders(response.data);
     } catch (error) {
       console.error("Upload failed:", error);
