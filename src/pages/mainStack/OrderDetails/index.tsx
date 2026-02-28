@@ -66,6 +66,7 @@ export const OrderDetails = () => {
               label="Coordinates"
               value={`${data.latitude.toFixed(4)}, ${data.longitude.toFixed(4)}`}
               onClick={() => openInGoogleMaps(data.latitude, data.longitude)}
+              $isLink
             />
           </DataGrid>
         </Card>
@@ -143,11 +144,13 @@ const DataItem = ({
   label,
   value,
   $isTotal,
+  $isLink,
   onClick,
 }: {
   label: string;
   value: string;
   $isTotal?: boolean;
+  $isLink?: boolean;
   onClick?: () => void;
 }) => (
   <Row
@@ -156,7 +159,7 @@ const DataItem = ({
     style={{ cursor: onClick ? "pointer" : "default" }}
   >
     <Label>{label}</Label>
-    <Value>{value}</Value>
+    <Value $isLink={$isLink}>{value}</Value>
   </Row>
 );
 
@@ -173,12 +176,6 @@ const TitleGroup = styled.div`
   display: flex;
   align-items: center;
   gap: ${SPACING.md};
-`;
-
-const Title = styled.h1`
-  font-size: ${FONT_SIZES.h1};
-  color: ${COLORS.textPrimary};
-  margin: 0;
 `;
 
 const IDBadge = styled.span`
@@ -236,10 +233,12 @@ const Label = styled.span`
   font-size: ${FONT_SIZES.body};
 `;
 
-const Value = styled.span`
+const Value = styled.span<{ $isLink?: boolean }>`
   color: ${COLORS.textPrimary};
   font-weight: 600;
   font-size: ${FONT_SIZES.body};
+  text-decoration: ${(props) => (props.$isLink ? "underline" : "none")};
+  cursor: ${(props) => (props.$isLink ? "pointer" : "default")};
 `;
 
 const JurisdictionGrid = styled.div`

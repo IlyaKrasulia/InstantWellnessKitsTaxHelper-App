@@ -136,6 +136,7 @@ const Th = styled.th`
 
 const Tr = styled.tr`
   transition: all 0.2s ease;
+  cursor: pointer;
   &:hover {
     background: ${COLORS.hoverOverlay};
   }
