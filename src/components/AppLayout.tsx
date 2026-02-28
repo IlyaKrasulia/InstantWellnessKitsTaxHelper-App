@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Outlet, useMatches, useNavigate } from "react-router-dom";
-import { COLORS, FONT_SIZES, FONTS, SPACING } from "@styles";
+import { BORDER_RADIUS, COLORS, FONT_SIZES, FONTS, SPACING } from "@styles";
 import logo from "@assets/images/logo-black.svg";
 import { File, HelpCircle, Import, ListOrdered, LogOut } from "lucide-react";
 import { RouteNames } from "@/utils/routes";
@@ -116,13 +116,14 @@ const MainContent = styled.main`
   padding: 40px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 `;
 
 const NavMenu = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 40px;
+  gap: ${SPACING.sm};
+  margin-top: ${SPACING.xl};
   flex: 1;
 `;
 
@@ -131,7 +132,7 @@ const NavItem = styled.div<{ $active?: boolean; $logout?: boolean }>`
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  border-radius: 12px;
+  border-radius: ${BORDER_RADIUS.medium};
   cursor: pointer;
   font-family: ${FONTS.family};
   font-weight: ${FONTS.weight.medium};
@@ -172,7 +173,7 @@ const BottomMenu = styled.div`
   padding-top: 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${SPACING.sm};
 `;
 
 const Title = styled.h1`

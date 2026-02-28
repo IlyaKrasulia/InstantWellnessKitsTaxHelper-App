@@ -57,7 +57,7 @@ export const FONTS = {
   family: "'Gilroy', sans-serif",
   weight: {
     regular: 400,
-    medium: 500, // Добавили для меню и таблиц
+    medium: 500,
     bold: 700,
   },
 };

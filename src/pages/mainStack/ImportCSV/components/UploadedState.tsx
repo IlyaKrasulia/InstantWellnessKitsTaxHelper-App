@@ -9,12 +9,16 @@ interface IProps {
   filesize: number;
   isError: boolean;
   errorMsg?: string;
+  onSubmit: () => void;
+  isLoading?: boolean;
 }
 
 export const UploadedState = ({
   filename,
   filesize,
   isError,
+  onSubmit,
+  isLoading,
 }: IProps) => {
   const formatedSize = useMemo(() => filesize.toLocaleString(), [filesize]);
 
@@ -41,8 +45,21 @@ export const UploadedState = ({
         <CustomButton
           variant="secondary"
           style={{ display: "block", margin: "0 auto", marginTop: SPACING.md }}
+          onClick={onSubmit}
+          disabled={isLoading}
         >
           {isError ? "Try Another File" : "Select other file"}
+        </CustomButton>
+        <CustomButton
+          variant="success"
+          style={{ display: "block", margin: "0 auto", marginTop: SPACING.md }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSubmit();
+          }}
+          isLoading={isLoading}
+        >
+          Submit
         </CustomButton>
       </div>
       <HintText>
