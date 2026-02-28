@@ -6,7 +6,7 @@ import { CreateManualOrder } from "@/pages/mainStack/CreateManualOrder";
 import { RouteNames } from "@/utils/routes";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ErrorPage } from "@/pages/mainStack/ErrorPage";
-import { OrdersList } from "@/pages/mainStack/OrdersList";
+import { OrdersList } from "@/pages/mainStack/OrdersList/index";
 
 export const router = createBrowserRouter([
   {
