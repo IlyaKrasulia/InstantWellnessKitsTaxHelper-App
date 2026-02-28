@@ -9,12 +9,12 @@ import {
   FONTS,
   FONT_SIZES,
 } from "@/utils/styles";
-import { OrdersMarkers } from "./OrdersMarkers";
 import { IOrderDetail, IOrderImportResponse, IOrderPoint } from "@/utils/types";
 import { compile, Endpoints } from "@/api/endpoints";
 import api from "@/api/instance";
 import { CustomButton } from "@/components/CustomButton";
-import { OrderDetailsSkeleton } from "./OrderDetailsSkeleton";
+import { OrdersMarkers } from "../../ImportCSV/components/OrdersMarkers";
+import { OrderDetailsSkeleton } from "../../ImportCSV/components/OrderDetailsSkeleton";
 
 export interface IOrder {
   id: string | number;
@@ -29,31 +29,31 @@ export interface IOrder {
 }
 
 interface IProps {
-  orders: IOrderImportResponse;
+  imports: IOrderImportResponse;
 }
 
-export const OrdersDashboard = ({ orders }: IProps) => {
+export const ImportDashboard = ({ imports }: IProps) => {
   const [selectedOrder, setSelectedOrder] = useState<IOrderDetail | null>(null);
   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
 
   const requestSeq = useRef(0);
 
   const stats = useMemo(() => {
-    const total = orders.metrics.totalSubtotal;
+    const total = imports.metrics.totalSubtotal;
     const avgTax =
-      orders.metrics.rowsTotal > 0
-        ? (orders.metrics.totalTax / orders.metrics.rowsTotal).toFixed(2)
+      imports.metrics.rowsTotal > 0
+        ? (imports.metrics.totalTax / imports.metrics.rowsTotal).toFixed(2)
         : 0;
 
     return [
       {
         label: "Total Orders",
-        value: orders.metrics.rowsTotal.toLocaleString(),
+        value: imports.metrics.rowsTotal.toLocaleString(),
       },
       { label: "Total Amount", value: `$${total.toLocaleString()}` },
       { label: "Avg Tax Amount", value: `$${avgTax}` },
     ];
-  }, [orders]);
+  }, [imports]);
 
   const handleMarkerClick = async (marker: IOrderPoint) => {
     const requestId = ++requestSeq.current;
@@ -71,7 +71,6 @@ export const OrdersDashboard = ({ orders }: IProps) => {
       }
     } catch (error) {
       console.error(error);
-      
     } finally {
       if (requestId === requestSeq.current) {
         setIsDetailsLoading(false);
@@ -92,12 +91,10 @@ export const OrdersDashboard = ({ orders }: IProps) => {
             attribution="&copy; CARTO"
           />
 
-          {
-            <OrdersMarkers
-              orders={orders.pointsAdded}
-              onMarkerClick={handleMarkerClick}
-            />
-          }
+          <OrdersMarkers
+            orders={imports.pointsAdded}
+            onMarkerClick={handleMarkerClick}
+          />
         </MapContainer>
 
         <StatsGrid>

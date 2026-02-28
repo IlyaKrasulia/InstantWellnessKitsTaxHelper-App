@@ -115,3 +115,10 @@ export interface IOrderDetail {
   breakdown: ITaxBreakdown;
   jurisdictions: IJurisdiction[];
 }
+
+export interface IOrderImport {
+  id: string;
+  sourceFileName: string;
+  createdAt: string;
+  orderCount: number;
+}
