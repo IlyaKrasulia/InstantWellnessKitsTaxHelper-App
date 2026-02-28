@@ -9,8 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/api/instance";
 import { Endpoints } from "@/api/endpoints";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 export const CreateManualOrder = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -22,6 +25,7 @@ export const CreateManualOrder = () => {
   });
 
   const onSubmit = (data: ManualOrderData) => {
+    setIsLoading(true);
     try {
       const date = new Date();
       const formattedDate = format(date, "yyyy-MM-dd HH:mm:ss");
@@ -43,6 +47,8 @@ export const CreateManualOrder = () => {
     } catch (error) {
       console.error("Failed to create order:", error);
       toast.error("Invalid input data. Please check your entries.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -94,6 +100,7 @@ export const CreateManualOrder = () => {
           disabled={!isValid}
           size="large"
           style={{ width: "100%" }}
+          isLoading={isLoading}
         >
           Save & Calculate
         </CustomButton>
