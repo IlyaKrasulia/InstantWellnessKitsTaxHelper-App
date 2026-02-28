@@ -7,11 +7,17 @@ import { ChangeEvent, useRef, useState } from "react";
 import styled from "styled-components";
 import { EmpryState } from "./components/EmptyState";
 import { UploadedState } from "./components/UploadedState";
+import api from "@/api/instance";
+import { Endpoints } from "@/api/endpoints";
+import { OrdersDashboard } from "./components/OrdersDashboard";
+import { IOrderImportResponse } from "@/utils/types";
 
 export const ImportCSVPage = () => {
   const [isDragActive, setIsDragActive] = useState(false);
   const [isError] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File>();
+  const [orders, setOrders] = useState<IOrderImportResponse>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputRef = useRef(null);
 
@@ -54,8 +60,37 @@ export const ImportCSVPage = () => {
     inputRef.current?.click();
   };
 
+  const onSubmit = async () => {
+    if (!selectedFile) return;
+
+  const formData = new FormData();
+
+  formData.append('file', selectedFile);
+
+  try {
+    setIsLoading(true);
+    const response = await api.post(Endpoints.IMPORT_ORDERS, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    
+    console.log('Upload success:', response);
+    setOrders(response.data);
+  } catch (error) {
+    console.error('Upload failed:', error);
+  } finally {
+    setIsLoading(false);
+  }
+  };
+
   return (
-    <Container
+    <>
+    {orders && orders.pointsAdded.length > 0 ? (
+      <div style={{ textAlign: "center", padding: "20px" }}>
+        <OrdersDashboard orders={orders} isLoading={isLoading} />
+      </div>
+    ) : <Container
       $active={isDragActive}
       $hasError={isError}
       onDragOver={handleDragOver}
@@ -73,13 +108,14 @@ export const ImportCSVPage = () => {
         />
       </div>
       {selectedFile ? (
-        <><UploadedState filename={selectedFile.name} filesize={selectedFile.size} isError={isError} /></>
+        <UploadedState filename={selectedFile.name} filesize={selectedFile.size} isError={isError} isLoading={isLoading} onSubmit={onSubmit} />
       ) : (
         <>
           <EmpryState />
         </>
       )}
-    </Container>
+    </Container>}
+    </>
   );
 };
 
@@ -117,7 +153,7 @@ const Container = styled.div<{ $active?: boolean, $hasError?: boolean }>`
 
   pointer-events: auto;
   & > * {
-    pointer-events: none;
+    pointer-events: auto;
   }
   &:hover {
     background: ${({ $hasError }) => 
