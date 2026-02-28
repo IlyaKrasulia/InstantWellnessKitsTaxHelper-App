@@ -6,7 +6,8 @@ export enum Endpoints {
   POST_ORDER = "/Orders",
   GET_ORDERS = POST_ORDER,
   GET_ORDER_ROW = "/Orders/imports/:orderImportId/rows/:rowId",
-  GET_IMPORTS = "/Orders/Imports/:id",
+  GET_IMPORTS = "/Orders/Imports",
+  GET_IMPORTS_BY_ID = "/Orders/Imports/:id",
 }
 
 export const compile = (

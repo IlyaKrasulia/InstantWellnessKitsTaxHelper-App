@@ -16,7 +16,7 @@ export const ImportDetails = () => {
   useEffect(() => {
     const fetchImportDetails = async () => {
       try {
-        const url = compile(Endpoints.GET_IMPORTS, {
+        const url = compile(Endpoints.GET_IMPORTS_BY_ID, {
           id,
         });
 
@@ -29,6 +29,10 @@ export const ImportDetails = () => {
 
     fetchImportDetails();
   }, [id]);
-  
+
+  if (!importDetails) {
+    return <div>Loading...</div>;
+  }
+
   return <ImportDashboard imports={importDetails} />;
 };

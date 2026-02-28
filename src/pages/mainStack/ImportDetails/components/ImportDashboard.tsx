@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import styled from "styled-components";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -36,6 +36,8 @@ export const ImportDashboard = ({ imports }: IProps) => {
   const [selectedOrder, setSelectedOrder] = useState<IOrderDetail | null>(null);
   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
 
+  const requestSeq = useRef(0);
+
   const stats = useMemo(() => {
     const total = imports.metrics.totalSubtotal;
     const avgTax =
@@ -54,6 +56,7 @@ export const ImportDashboard = ({ imports }: IProps) => {
   }, [imports]);
 
   const handleMarkerClick = async (marker: IOrderPoint) => {
+    const requestId = ++requestSeq.current;
     setIsDetailsLoading(true);
 
     try {
@@ -63,11 +66,15 @@ export const ImportDashboard = ({ imports }: IProps) => {
       });
 
       const response = await api.get<IOrderDetail>(url);
-      setSelectedOrder(response.data);
+      if (requestId === requestSeq.current) {
+        setSelectedOrder(response.data);
+      }
     } catch (error) {
       console.error(error);
     } finally {
-      setIsDetailsLoading(false);
+      if (requestId === requestSeq.current) {
+        setIsDetailsLoading(false);
+      }
     }
   };
 
