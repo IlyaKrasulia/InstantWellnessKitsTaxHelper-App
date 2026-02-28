@@ -98,10 +98,10 @@ export const ImportDashboard = ({ imports }: IProps) => {
         </MapContainer>
 
         <StatsGrid>
-          {stats.map((stat, idx) => (
+          {stats && stats.map((stat, idx) => (
             <StatCard key={idx}>
-              <StatLabel>{stat.label}</StatLabel>
-              <StatValue>{stat.value}</StatValue>
+              <StatLabel>{stat?.label}</StatLabel>
+              <StatValue>{stat?.value}</StatValue>
             </StatCard>
           ))}
         </StatsGrid>
@@ -114,60 +114,60 @@ export const ImportDashboard = ({ imports }: IProps) => {
           <DetailsContent>
             <SidebarTitle>Order Details</SidebarTitle>
             <InfoGroup>
-              <DetailItem label="Order ID" value={`#${selectedOrder.id}`} />
-              <DetailItem
+              {selectedOrder?.id && <DetailItem label="Order ID" value={`#${selectedOrder.id}`} />}
+              {selectedOrder?.totalAmount && <DetailItem
                 label="Total Amount"
                 value={`$${selectedOrder.totalAmount}`}
-              />
-              <DetailItem label="Tax" value={`$${selectedOrder.taxAmount}`} />
-              <DetailItem
+              />}
+              {selectedOrder?.taxAmount && <DetailItem label="Tax" value={`$${selectedOrder.taxAmount}`} />}
+              {selectedOrder?.city && <DetailItem
                 label="Location"
                 value={`${selectedOrder.city ? `${selectedOrder.city}, ` : ""}${selectedOrder.county}`}
-              />
-              <DetailItem
+              />}
+              {selectedOrder?.timestamp && <DetailItem
                 label="Date"
                 value={new Date(selectedOrder.timestamp).toLocaleDateString()}
-              />
-              <DetailItem label="Source" value={selectedOrder.source} />
+              />}
+              {selectedOrder?.source && <DetailItem label="Source" value={selectedOrder.source} />}
             </InfoGroup>
 
             <SectionTitle>Financial Summary</SectionTitle>
             <InfoGroup>
-              <DetailItem
+              {selectedOrder?.subtotal && <DetailItem
                 label="Subtotal"
                 value={`$${selectedOrder.subtotal.toFixed(2)}`}
-              />
-              <DetailItem
+              />}
+              {selectedOrder?.taxAmount && <DetailItem
                 label="Tax Amount"
                 value={`$${selectedOrder.taxAmount.toFixed(2)}`}
-              />
-              <DetailItem
+              />}
+              {selectedOrder?.totalAmount && <DetailItem
                 label="Total Amount"
                 value={`$${selectedOrder.totalAmount.toFixed(2)}`}
                 $isBold
-              />
-              <DetailItem
+              />}
+              {selectedOrder?.compositeTaxRate && <DetailItem
                 label="Composite Rate"
                 value={`${(selectedOrder.compositeTaxRate * 100).toFixed(3)}%`}
-              />
+              />}
             </InfoGroup>
 
             <SectionTitle>Tax Breakdown</SectionTitle>
             <InfoGroup>
-              <DetailItem
+              {selectedOrder?.breakdown?.state_rate && <DetailItem
                 label="State Rate"
                 value={`${(selectedOrder.breakdown.state_rate * 100).toFixed(2)}%`}
-              />
-              <DetailItem
+              />}
+              {selectedOrder?.breakdown?.county_rate && <DetailItem
                 label="County Rate"
                 value={`${(selectedOrder.breakdown.county_rate * 100).toFixed(2)}%`}
-              />
-              <DetailItem
+              />}
+              {selectedOrder?.breakdown?.city_rate && <DetailItem
                 label="City Rate"
                 value={`${(selectedOrder.breakdown.city_rate * 100).toFixed(2)}%`}
-              />
+              />}
 
-              {selectedOrder.breakdown.special_rates.map((rate, idx) => (
+              {selectedOrder?.breakdown?.special_rates && selectedOrder.breakdown.special_rates.map((rate, idx) => (
                 <DetailItem
                   key={idx}
                   label={rate.name}
@@ -178,7 +178,7 @@ export const ImportDashboard = ({ imports }: IProps) => {
 
             <SectionTitle>Jurisdictions</SectionTitle>
             <JurisdictionList>
-              {selectedOrder.jurisdictions.map((j, idx) => (
+              {selectedOrder?.jurisdictions && selectedOrder.jurisdictions.map((j, idx) => (
                 <JurisdictionTag key={idx} title={`${j.type}: ${j.name}`}>
                   <span className="type">{j.name}</span>
                 </JurisdictionTag>
